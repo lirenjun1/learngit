@@ -1,0 +1,52 @@
+<include file="Public:header"/>
+<script type="text/javascript" src="__WEBPUBLIC__/Admin/js/ajax-operate.js"></script>
+<!--主页面-->
+<div id="main-content" class="content">
+    <ul class="breadcrumb">
+        <button type="button" onclick="history.go(-1);" class="btn btn-default btn-primary">返回</button>
+    </ul>
+    <include file="Public:notification"/>
+    <div class="content-box-content">
+        <h3>请选择删除原因：</h3>
+        <div>
+        <label class="radio-box"><input type="radio" name="result" checked value="抄袭他人脑洞">抄袭他人脑洞</label><br>
+        <label class="radio-box"><input type="radio" name="result" value="恶意刷水，骗取奖金">恶意刷水，骗取奖金</label><br>
+        <label class="radio-box"><input type="radio" name="result" value="提交内容与脑暴主题无关">提交内容与脑暴主题无关</label><br>
+        <label class="radio-box"><input type="radio" name="result" value="其它">其它
+            <textarea class="msg-box-input"></textarea>
+        </label>
+        </div>
+        <div style="text-align: left;margin-top: 30px"><button class="btn btn-default btn-primary result-submit">提交</button></div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(".result-submit").click(function(){
+        var v = $('.radio-box>input[type="radio"]:checked').val();
+        if(v == "其它"){
+            v = $(".msg-box-input").val();
+            if(!v){
+                $.alert("理由不能为空");
+                return;
+            }
+        }
+        //将原因存入数据库
+        $.ajax({
+            url:'{:U("Idea/deleteIdeaAction")}',
+            type:'post',
+            data: {
+                'idea_id':"{$idea_id}",
+                'reason': v
+            },
+            dataType:'json',
+            success:function(data){
+                if(data.success){
+                    alert(data.success);
+                    history.go(-1);
+                } else {
+                    alert(data.error);
+                }
+            }
+        });
+    })
+</script>
+<include file="Public:footer"/>

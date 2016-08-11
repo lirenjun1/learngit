@@ -1,0 +1,106 @@
+<include file="Public:header"/>
+<!--主页面-->
+<div id="main-content" class="content">
+    <ul class="breadcrumb">
+        <li><a href="/">首页</a></li>
+        <li class="active"><a href="">4A</a></li>
+        <li class="active">添加4A用户</li>
+    </ul>
+
+    <div class="page-header clearfix">
+        <h3>4A用户</h3>
+        <ul class="nav nav-tabs">    
+            <li>
+                <a href="{:U('Online/OnlineList')}">4A用户列表</a>
+            </li>
+            <li class="active">
+                <a href="{:U('Online/addOnline')}">添加4A用户</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="content-box-content">
+        <form action="{:U('Online/Onlineadd')}" method="post" id="form" class="form-horizontal" role="form">
+            <div class="form-group">
+                <label for="account" class="col-sm-3 control-label">昵　　称：</label>
+                <div class="col-sm-9">
+                  <input type="text" style="float:left;" class="form-control" id="b_name" name="b_name">
+                </div>
+            </div>
+			<div class="form-group">
+                <label for="account" class="col-sm-3 control-label">手机号　：</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="cellphone" name="cellphone">
+                </div>
+            </div>   
+			 <div class="form-group">
+                <label for="account" class="col-sm-3 control-label">邮　　箱：</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="email" name="email">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="password" class="col-sm-3 control-label">密　　码：</label>
+                <div class="col-sm-9">
+                  <input type="password" class="form-control" id="password" name="password">
+                </div>
+            </div> 
+            <div class="form-group">
+                <label for="re_password" class="col-sm-3 control-label">确认密码：</label>
+                <div class="col-sm-9">
+                  <input type="password" class="form-control" id="b_password" name="b_password">
+                  <p class="bb_password" style="color:red;"></p>
+                </div>
+            </div>       
+        </form>
+		<div class="form-group">
+			<div class="col-sm-offset-3 col-sm-9">
+			  <button type="submit" id="submit" class="btn btn-default btn-primary">确认添加</button>
+			</div>
+		</div>
+    </div>
+</div>
+<include file="Public:footer"/>
+<script src="__WEBPUBLIC__/Home/js/jquery-1.10.2.min.js"></script>
+<script>	
+	$(function(){
+		$(".form-control").focus(function(){
+			$(this).css("border","1px solid #ccc");
+		})
+	
+		$('#submit').click(function(){
+			// 昵称
+			if($("#b_name").val() == 0){
+				$("#b_name").css("border","1px solid red");
+				return;
+			}
+            // 电话号
+            if($("#cellphone").val() == 0){
+                $("#cellphone").css("border","1px solid red");
+                return;
+            }
+            // 邮箱
+            if($("#email").val() == 0){
+                $("#email").css("border","1px solid red");
+                return;
+            }
+            // 密码
+            if($("#password").val() == 0){
+                $("#password").css("border","1px solid red");
+                return;
+            }
+            // 确认密码
+            if($("#b_password").val() == 0){
+                $("#b_password").css("border","1px solid red");
+                return;
+            }
+            if($("#password").val() !=$("#b_password").val()){
+                $("#b_password").css("border","1px solid red");
+                $(".bb_password").text("两次密码输入不一致");
+                return;
+            }
+
+			$("#form").submit();
+        });
+	})
+</script>	

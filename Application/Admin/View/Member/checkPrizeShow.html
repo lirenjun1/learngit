@@ -1,0 +1,118 @@
+<include file="Public:header"/>
+<script src="__WEBPUBLIC__/Home/js/jquery-1.9.1.min.js"></script>
+<style>
+    .form-horizontal .control-label{
+        padding-top: 0px;
+    }
+</style>
+<!--主页面-->
+<div id="main-content" class="content">
+    <ul class="breadcrumb">
+        <li><a href="#">首页</a></li>
+    </ul>
+
+    <div id="tabs-content" class="content-box-content">
+        <div class="ul">
+            <form class="form-horizontal col-sm-12" >
+                <div class="form-group col-sm-12">
+                    <label class="col-sm-3 control-label">证书编号：</label>
+                    <div class="col-sm-9">
+                        <span>{$prize['p_id']}</span>
+                    </div>
+                </div>
+                <div class="form-group col-sm-12">
+                    <label class="col-sm-3 control-label">用户编号：</label>
+                    <div class="col-sm-9">
+                        <span>{$prize['m_id']}</span>
+                    </div>
+                </div>
+                <div class="form-group col-sm-12">
+                    <label class="col-sm-3 control-label">获奖类型：</label>
+                    <div class="col-sm-9">
+                        <span>{$prize['type']}</span>
+                    </div>
+                </div>
+                <div class="form-group col-sm-12">
+                    <label class="col-sm-3 control-label">证书查看：</label>
+                    <div class="col-sm-9">
+                        <a target="_blank" href="__WEBROOT__/Uploads{$prize['file']}">查看{$prize['file']}</a>
+                    </div>
+                </div>
+                <div class="form-group col-sm-12">
+                    <label class="col-sm-3 control-label">设置证书首图：</label>
+                    <div class="col-sm-9">
+                        <label class="checkbox-inline">
+                            <input type="radio" name="prize" value="default1.png" >&nbsp;default1.png
+                            <img width="100px" src="__WEBPUBLIC__/Home/images/prize/default1.png">
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="radio" name="prize" value="default2.png">&nbsp;default2.png
+                            <img width="100px" src="__WEBPUBLIC__/Home/images/prize/default2.png">
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="radio" name="prize" value="default3.png">&nbsp;default3.png
+                            <img width="100px" src="__WEBPUBLIC__/Home/images/prize/default3.png">
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group col-sm-12">
+                    <div class="col-sm-offset-2 col-sm-2">
+                        <button type="button" onclick="history.go(-1);" class="fanhui btn btn-default btn-primary">返回</button>
+                    </div>
+                    <div class="col-sm-2">
+                        <button type="button" onclick="settrue()" class="btn btn-default btn-primary">通过</button>
+                    </div>
+                    <div class="col-sm-2">
+                        <button type="button" onclick="setfalse()" class="btn btn-default btn-primary">不通过</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<include file="Public:footer"/>
+<script>
+    function settrue(){
+        if ($('input[name="prize"]:checked').val() != null){
+            var data = {
+                'p_id': "{$prize['p_id']}",
+                'picture':$('input[name="prize"]:checked').val(),
+            }
+            $.ajax({
+                url:"{:U('Member/checkPrizeTrue')}",
+                type:"post",
+                data:data,
+                dataType:"json",
+                success:function(res){
+                    if(res.success){
+                        alert(res.success);
+                        $('.fanhui').click();
+                    }else{
+                        alert(res.error);
+                    }
+                }
+            });
+        }else{
+            alert("请设置证书首图！");
+        }
+    }
+    function setfalse() {
+        var data = {
+            'p_id': "{$prize['p_id']}",
+        }
+        $.ajax({
+            url: "{:U('Member/checkPrizeFalse')}",
+            type: "post",
+            data: data,
+            dataType: "json",
+            success:function(res){
+                if(res.success){
+                    alert(res.success);
+                    $('.fanhui').click();
+                }else{
+                    alert(res.error);
+                }
+            }
+        });
+    }
+</script>

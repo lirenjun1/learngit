@@ -1,0 +1,277 @@
+<include file="Public:header"/>
+<link rel="stylesheet" href="__WEBPUBLIC__/Admin/css/lrtk.css" />
+<script src="__WEBPUBLIC__/Home/js/plugins/ajaxfileupload.js"></script>
+<link rel="stylesheet" href="__WEBPUBLIC__/Home/DatePicker/lhgcalendar.css" type="text/css"/>
+<script src="__WEBPUBLIC__/Common/DatePicker/lhgcore.js"></script>
+<script src="__WEBPUBLIC__/Common/DatePicker/lhgcalendar.js"></script>
+<script type="text/javascript" src="__WEBPUBLIC__/Admin/js/jquery.min.js"></script>
+<script type="text/javascript" src="__WEBPUBLIC__/Admin/js/jquery.imgbox.pack.js"></script>
+<style>
+
+    .task-tag a{
+        cursor: pointer;
+        position: absolute;
+        right: 4px;
+        top: 4px;
+    }
+    .file-box .glyphicon{
+        position: absolute;
+        right: 5px;
+        margin-top: 7px;
+    }
+    .form-control a{
+        cursor: pointer;
+    }
+    .form-control img{
+        border: 4px solid #222;
+        margin-top: -100%;
+        margin-left: 100px;
+        display: none;
+        z-index: 999;
+        position: relative;
+    }
+
+    .col-sm-9-img{
+        width:200px;
+    }
+    #imgbox-wrap-4{
+        padding: 0px;
+    }
+</style>
+<div id="main-content" class="content">
+    <ul class="breadcrumb">
+        <li><a href="#">首页</a></li>
+        <li><a href="#">创意人管理</a></li>
+        <li class="active">创意人</li>
+    </ul>
+
+    <div class="page-header clearfix">
+        <h3>项目管理</h3>
+        <ul id="tabs" class="nav nav-tabs">
+            <li>
+               <a href="{:U('Originality/originality')}">创意人列表</a>
+            </li>
+            <li class="active">
+                <a href="javascript:;">创意人详情</a>
+            </li>
+        </ul>
+    </div>
+    <div id="credit"></div>
+    <volist name="orig" id="apply">
+    <div id="tabs_content" class="content-box-content">
+        <div class="ul">
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">创意人ID：</label>
+                    <div class="col-sm-9">
+                        <label id="id">{$apply['people_id']}</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">申请次数:：</label>
+                    <div class="col-sm-9">
+                        <label id="id">{$apply['frequency']}</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">用户ID：</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="mem_id" name="name" value="{$apply['mem_id']}" onchange="valChange(this)">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">姓名：</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="people_name" name="name" value="{$apply['people_name']}" onchange="valChange(this)">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">性别：</label>
+                    <div class="col-sm-9">
+                        <if condition="$apply['people_sex'] eq 1">
+                            <input type="text" class="form-control" rows="8"  id="people_sex" onchange="valChange(this)" value="男">
+                        </if>
+                        <if condition="$apply['people_sex'] eq 0">
+                            <input type="text" class="form-control" rows="8"  id="people_sex" onchange="valChange(this)" value="女">
+                        </if>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">年龄：</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" rows="8" id="people_age" onchange="valChange(this)" value="{$apply['people_age']}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">代号：</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" rows="8"  id="people_nicheng" onchange="valChange(this)" value="{$apply['people_nicheng']}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">广告公司任职年期：</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" rows="8" id="people_once" onchange="valChange(this)" value="{$apply['people_once']}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">4A公司任职年期：</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" rows="8" id="people_onces" onchange="valChange(this)" value="{$apply['people_onces']}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">最近的工作职位：</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" rows="8" id="people_now" onchange="valChange(this)" value="{$apply['people_now']}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">最想做但没做过的品牌：</label>
+                    <div class="col-sm-9">
+                        <textarea type="text" class="form-control" id="people_service" name="people_service" style="width: 600px;height: 100px" onchange="valChange(this)">{$apply['people_brand']}</textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                <label class="col-sm-3 control-label">最擅长的产品类别：</label>
+                <div class="col-sm-9">
+                    <textarea type="text" class="form-control" id="people_brand" name="people_brand" style="width: 600px;height: 100px" onchange="valChange(this)">{$apply['people_brand']}</textarea>
+                </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">最想做但没做过的产品类别：</label>
+                    <div class="col-sm-9">
+                        <textarea type="text" class="form-control" id="people_category" name="people_category" style="width: 600px;height: 100px" onchange="valChange(this)">{$apply['people_category']}</textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">个人擅长（多选）：</label>
+                    <div class="col-sm-9">
+                        <textarea type="text" class="form-control" id="people_personal" name="people_personal" style="width: 600px;height: 100px" onchange="valChange(this)">{$apply['people_personal']}</textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">个人作品：</label>
+                    <div class="col-sm-9">
+                        <a id="example2-1" title="" href="__WEBROOT__/Uploads{$strarr['0']}"><img class="col-sm-9-img" alt="" src="__WEBROOT__/Uploads{$strarr['0']}" /></a>
+                        <a id="example2-1" title="" href="__WEBROOT__/Uploads{$strarr['1']}"><img style="margin:0 20px;" class="col-sm-9-img" alt="" src="__WEBROOT__/Uploads{$strarr['1']}" /></a>
+                        <a id="example2-1" title="" href="__WEBROOT__/Uploads{$strarr['2']}"><img class="col-sm-9-img" alt="" src="__WEBROOT__/Uploads{$strarr['2']}" /></a>
+                    </div>
+                </div>
+                <div class="form-group">
+                <div class="col-sm-offset-3 col-sm-9">
+                    <a href="{:U('Home/Member/MemberDetail',array('m_id'=>$apply['mem_id']))}" target="_blank" class="btn btn-default btn-primary">查看信息</a>
+                    <if condition="$apply['auditpass'] eq 0">
+                        <a onclick="adopt()" class="btn btn-default btn-primary">审核通过</a>
+                    </if>
+
+                    <if condition="$apply['auditpass'] eq 1">
+                        <a onclick="modify()" class="btn btn-default btn-primary">修改</a>
+                    </if>
+                    <a href="javascript:history.go(-1);" class="btn btn-default btn-primary">返回</a>
+                </div>
+            </div>
+                <br><br><br><br><br><br><br><br><br><br><br><br>
+            </div>
+        </div>
+    </div>
+</volist>
+<!--主页面 end-->
+<script>
+    function adopt(){
+        var deurl = "{:U('Originality/pass')}";
+        if($("#people_sex").val() == '男'){
+            var sex = '1';
+        }
+        if($("#people_sex").val() == '女'){
+            var sex = '0';
+        }
+        var data = {
+            'mem_id':$("#mem_id").val(),
+            'people_name':$("#people_name").val(),
+            'people_sex':sex,
+            'people_age':$("#people_age").val(),
+            'people_nicheng':$("#people_nicheng").val(),
+            'people_once':$("#people_once").val(),
+            'people_onces':$("#people_onces").val(),
+            'people_now':$("#people_now").val(),
+            'people_brand':$("#people_brand").val(),
+            'people_category':$("#people_category").val(),
+            'people_service':$("#people_service").val(),
+            'people_personal':$("#people_personal").val(),
+        };
+        $.ajax({
+            type:'POST',
+            url:deurl,
+            data:data,
+            dataType: 'json',
+            success: function (data){
+                if (data.success) {
+                    alert(data.success);
+                    window.location.reload();//刷新当前页面.
+                } else {
+                    alert(data.error);
+                }
+            }
+        })
+
+    }
+</script>
+<script>
+    function modify(){
+        var deurl = "{:U('Originality/modify')}";
+        var data = {
+            'mem_id':$("#mem_id").val(),
+            'people_name':$("#people_name").val(),
+            'people_sex':$("#people_sex").val(),
+            'people_age':$("#people_age").val(),
+            'people_nicheng':$("#people_nicheng").val(),
+            'people_once':$("#people_once").val(),
+            'people_onces':$("#people_onces").val(),
+            'people_now':$("#people_now").val(),
+            'people_brand':$("#people_brand").val(),
+            'people_category':$("#people_category").val(),
+            'people_service':$("#people_service").val(),
+            'people_personal':$("#people_personal").val(),
+        };
+        $.ajax({
+            type:'POST',
+            url:deurl,
+            data:data,
+            dataType: 'json',
+            success: function (data){
+                if (data.success) {
+                    alert(data.success);
+                    window.location.reload();//刷新当前页面.
+                } else {
+                    alert(data.error);
+                }
+            }
+        })
+
+    }
+</script>
+<script>
+    $(document).ready(function() {
+        $("#example1-1").imgbox();
+
+        $("#example1-2").imgbox({
+            'zoomOpacity'	: true,
+            'alignment'		: 'center'
+        });
+
+        $("#example1-3").imgbox({
+            'speedIn'		: 0,
+            'speedOut'		: 0
+        });
+
+        $("#example2-1, #example2-2").imgbox({
+            'speedIn'		: 0,
+            'speedOut'		: 0,
+            'alignment'		: 'center',
+            'overlayShow'	: true,
+            'allowMultiple'	: false
+        });
+    });
+</script>
+<include file="Public:footer"/>

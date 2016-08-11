@@ -1,0 +1,169 @@
+<include file="Public:header"/>
+<script src="__WEBPUBLIC__/Home/js/plugins/ajaxfileupload.js"></script>
+<link rel="stylesheet" href="__WEBPUBLIC__/Home/DatePicker/lhgcalendar.css" type="text/css"/>
+<script src="__WEBPUBLIC__/Common/DatePicker/lhgcore.js"></script>
+<script src="__WEBPUBLIC__/Common/DatePicker/lhgcalendar.js"></script>
+<style>
+    .information-left{
+        width:286px;
+        float: left;
+        margin-left:18%;
+    }
+    .information-right{
+        width:286px;
+        float: left;
+        margin-left:20px;
+    }
+    .task-tag a{
+        cursor: pointer;
+        position: absolute;
+        right: 4px;
+        top: 4px;
+    }
+    .file-box .glyphicon{
+        position: absolute;
+        right: 5px;
+        margin-top: 7px;
+    }
+    .form-control a{
+        cursor: pointer;
+    }
+    .form-control img{
+        border: 4px solid #222;
+        margin-top: -100%;
+        margin-left: 100px;
+        display: none;
+        z-index: 999;
+        position: relative;
+    }
+</style>
+<div id="divCenter" align="center" style="position: absolute; z-index: 9;display:none;  background-color: #eee; width:900px;left:50px;top:100px; border:1px solid #222;">
+    <a href="javascript:void(0);" onclick="picClose();"><img src="__WEBROOT__/Uploads{$script['section_a']}" style="width:900px;"/></a>
+</div>
+<div id="divCente" align="center" style="position: absolute; z-index: 9;display:none;  background-color: #eee; width:900px;left:50px;top:100px; border:1px solid #222;">
+    <a href="javascript:void(0);" onclick="picClos();"><img src="__WEBROOT__/Uploads{$script['section_b']}" style="width:900px;"/></a>
+</div>
+<div id="main-content" class="content">
+    <ul class="breadcrumb">
+        <li><a href="#">首页</a></li>
+        <li><a href="{:U('Order/editOrder',array('id'=>$script['x_id']))}">{$name['0']['ordersubject']}的稿件</a></li>
+        <li class="active">
+            <if condition="$script['g_status'] eq 1">
+                第一稿
+            </if>
+            <if condition="$script['g_status'] eq 2">
+                第二稿
+            </if>
+            <if condition="$script['g_status'] eq 3">
+                第三稿
+            </if>
+        </li>
+    </ul>
+
+    <div id="tabs_content" class="content-box-content">
+        <div class="ul">
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <input type="hidden" id="g_id" value="{$script['g_id']}">
+                    <label class="col-sm-3 control-label">稿件编号：</label>
+                    <div class="col-sm-9">
+                        <label id="x_id">{$script['g_id']}</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">稿件名：</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="manuscriptname" name="manuscriptname" value="{$script['manuscriptname']}" onchange="valChange(this)">
+                    </div>
+                </div>
+            </div>
+            <!-- 稿件信息 -->
+            <div style="width:100%;">
+                <div class="information-left">
+                    <p style="padding:0px;text-align:center;">A</p>
+                    <a name='fff' class="test" href='javascript:void(0);' onclick='picBig();'>
+                        <img src="/pitchina/Uploads{$script['section_a']}" style="width:286px;"/>
+                    </a>
+                    <textarea class="form-control" style="margin:20px 0px; padding:10px;width:288px;" id="the_a">{$script['the_a']}</textarea>
+                </div>
+
+
+                <div class="information-right">
+                    <p style="padding:0px;text-align:center;">B</p>
+                    <a name='fff' class="test" href='javascript:void(0);' onclick='picBi();'>
+                        <img src="/pitchina/Uploads{$script['section_b']}" alt=""style="width:286px;"/>
+                    </a>
+                    <textarea class="form-control" style="margin:20px 0px; padding:10px;width:288px;" id="the_b">{$script['the_b']}</textarea>
+                </div>
+            </div>
+            <!-- 稿件信息 -->
+            <div class="form-group">
+                <div class="col-sm-9" style="width:100%;">
+                    <div style="width:17%;float:left;text-align:right;padding-right:10px;font-weight:700;">稿件反馈：</div>
+                    <textarea type="text" class="form-control" rows="8" style="width: 600px;height: 100px;margin-left:17%;" id="feedback" onchange="valChange(this)">{$script['feedback']}</textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-3 col-sm-9" style="margin-top:20px;">
+                    <if condition="$script['state'] eq 0">
+                        <a href="{:U('Order/review',array('id'=>$script['g_id']))}" class="btn btn-default btn-primary">通过</a>&nbsp;&nbsp;&nbsp;
+                    </if>
+                    <if condition="$script['state'] eq 1">
+                        <button id="subit" class="btn btn-default btn-primary">修改</button>&nbsp;&nbsp;&nbsp;
+                    </if>
+                    <a href="javascript:history.go(-1);" class="btn btn-default btn-primary">返回</a>
+                </div>
+            </div>
+            <br><br><br><br><br><br>
+        </di>
+    </div>
+</div>
+<script>
+    function picBig() {
+        var v = document.getElementById('divCenter');
+        v.style.display = "block";
+    }
+
+    function picClose() {
+        var v = document.getElementById('divCenter');
+        v.style.display = "none";
+    }
+    function picBi() {
+        var v = document.getElementById('divCente');
+        v.style.display = "block";
+    }
+
+    function picClos() {
+        var v = document.getElementById('divCente');
+        v.style.display = "none";
+    }
+</script>
+<!-- 修改信息 -->
+<script>
+    $(function(){
+        $("#subit").click(function(){
+            var data = {
+                'g_id':$("#g_id").val(),
+                'manuscriptname':$("#manuscriptname").val(),
+                'feedback':$("#feedback").val(),
+                'the_a':$("#the_a").val(),
+                'the_b':$("#the_b").val(),
+            }
+            $.ajax({
+                url: "{:U('Order/modify')}",
+                type: 'post',
+                data: data,
+                dataType: 'json',
+                success: function (data) {
+                    if (data.success) {
+                        alert(data.success);
+                        window.location.reload();//刷新当前页面.
+                    } else {
+                        alert(data.error);
+                    }
+                }
+            })
+        })
+    })
+</script>
+<include file="Public:footer"/>

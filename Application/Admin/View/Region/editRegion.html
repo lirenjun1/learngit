@@ -1,0 +1,40 @@
+<include file="Public:header"/>
+<!--主页面-->
+<div id="main-content" class="content">
+    <ul class="breadcrumb">
+        <li><a href="#">首页</a></li>
+        <li class="active"><a href="#">海外区域管理</a></li>
+        <li class="active">修改区域信息</li>
+    </ul>
+
+    <div class="page-header clearfix">
+        <h3>海外区域管理</h3>
+        <ul class="nav nav-tabs">    
+            <li>
+                <a href="{:U('Region/regionList')}">区域信息列表</a>
+            </li>
+            <li  class="active">
+                <a href="#">修改区域信息</a>
+            </li>
+        </ul>
+    </div>
+
+    <!--表格内容-->
+    <div class="content-box-content">
+        <form action="{:U('Region/editRegion')}" method="post" class="form-horizontal">
+            <input type="hidden" name="region_id" value="{$region_info['region_id']}">
+            <div class="form-group">
+                <label for="region_name" class="col-sm-3 control-label">国家名称：</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="region_name" name="region_name" value="{$region_info['region_name']}">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-3 col-sm-9">
+                  <button type="submit" class="btn btn-default btn-primary">确认修改</button>
+                </div>
+            </div>
+            </form>
+        </div>
+</div>
+<include file="Public:footer"/>

@@ -1,0 +1,125 @@
+<include file="Public:header"/>
+<script src="__WEBPUBLIC__/Home/js/plugins/ajaxfileupload.js"></script>
+<link rel="stylesheet" href="__WEBPUBLIC__/Home/DatePicker/lhgcalendar.css" type="text/css"/>
+<script src="__WEBPUBLIC__/Common/DatePicker/lhgcore.js"></script>
+<script src="__WEBPUBLIC__/Common/DatePicker/lhgcalendar.js"></script>
+<style>
+    .task-tag-list{
+        width: 600px;
+    }
+    .task-tag{
+        background: #ccc;
+        padding: 6px 24px 6px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        margin: 10px 5px;
+        word-break:break-all;
+        position: relative;
+    }
+    .task-tag a{
+        cursor: pointer;
+        position: absolute;
+        right: 4px;
+        top: 4px;
+    }
+    #t_id{
+        margin-left: 10px;
+        margin-top: 7px;
+    }
+    .file-box{
+        position: relative;
+        margin-bottom: 15px;
+    }
+    .file-box .glyphicon{
+        position: absolute;
+        right: 5px;
+        margin-top: 7px;
+    }
+    .form-control a{
+        cursor: pointer;
+    }
+    .form-control img{
+        border: 4px solid #222;
+        margin-top: -100%;
+        margin-left: 100px;
+        display: none;
+        z-index: 999;
+        position: relative;
+    }
+    #bid_start_time,#bid_end_time{
+        display: inline-block;
+        width: 30%;
+    }
+</style>
+<div id="main-content" class="content">
+    <ul class="breadcrumb">
+        <li><a href="#">首页</a></li>
+        <li><a href="#">4A Online管理</a></li>
+        <li class="active">申请列表</li>
+    </ul>
+
+    <div class="page-header clearfix">
+        <h3>项目管理</h3>
+        <ul id="tabs" class="nav nav-tabs">
+            <li>
+               <a href="{:U('Originality/apply')}">申请列表</a>
+            </li>
+            <li class="active">
+                <a href="javascript:;">申请详情</a>
+            </li>
+        </ul>
+    </div>
+    <div id="tabs_content" class="content-box-content">
+        <div class="ul">
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">项目编号：</label>
+                    <div class="col-sm-9">
+                        <label id="id">{$apply[0]['id']}</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">姓名：</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="name" name="name" value="{$apply[0]['name']}" onchange="valChange(this)">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">E-mail：</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="mail" name="mail" value="{$apply[0]['email']}" onchange="valChange(this)">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">联系人电话：</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="Telephone" name="Telephone" value="{$apply[0]['phone']}" onchange="valChange(this)">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">公司名称：</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="company" name="company" value="{$apply[0]['company']}" onchange="valChange(this)">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">需求简述：</label>
+                    <div class="col-sm-9">
+                        <textarea type="text" class="form-control" rows="8" style="width: 600px;height: 100px" id="back_info" onchange="valChange(this)">{$apply[0]['demand']}</textarea>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-3 col-sm-9">
+                    <a href="javascript:history.go(-1);" class="btn btn-default btn-primary">返回</a>
+                </div>
+            </div>
+            <br><br><br><br><br><br><br><br><br><br><br><br>
+        </div>
+    </div>
+</div>
+<!--主页面 end-->
+<include file="Public:footer"/>

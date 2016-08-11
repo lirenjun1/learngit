@@ -1,0 +1,168 @@
+<include file="Public:header"/>
+<script src="__WEBPUBLIC__/Home/js/jquery-1.7.1.min.js"></script>
+<style>
+    .form-horizontal .control-label{
+        padding-top: 0px;
+    }
+</style>
+<!--主页面-->
+<div id="main-content" class="content">
+    <ul class="breadcrumb">
+        <li><a href="#">首页</a></li>
+    </ul>
+
+    <div id="tabs-content" class="content-box-content">
+        <div class="ul">
+            <form class="form-horizontal col-sm-12" >
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-3 control-label">头像：</label>
+                    <div class="col-sm-9">
+                        <if condition="!empty($member['m_head'])"><br/>
+                            <img src="__WEBROOT__/Uploads/Head/{$member['m_head']}" width="150px" height="150px">
+                            <else/>
+                            <img src="__WEBROOT__/Uploads/Head/default/default.jpg" width="150px" height="150px">
+                        </if>
+                    </div>
+                </div>
+
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-3 control-label">手持身份证：</label>
+                    <div class="col-sm-9">
+                        <if condition="!empty($member['id_card_a'])"><br/>
+                            <img src="__WEBROOT__/Uploads/{$member['id_card_a']}" width="200px">
+                            <else/>
+                            待完善
+                        </if>
+                    </div>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-3 control-label">身份证正面：</label>
+                    <div class="col-sm-9">
+                        <if condition="!empty($member['id_card_p'])"><br/>
+                            <img src="__WEBROOT__/Uploads/{$member['id_card_p']}" width="200px">
+                            <else/>
+                            待完善
+                        </if>
+                    </div>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-3 control-label">身份证背面：</label>
+                    <div class="col-sm-9">
+                        <if condition="!empty($member['id_card_o'])"><br/>
+                            <img src="__WEBROOT__/Uploads/{$member['id_card_o']}" width="200px">
+                            <else/>
+                            待完善
+                        </if>
+                    </div>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-3 control-label">身份证号码：</label>
+                    <div class="col-sm-9">
+                        <span>{$member['card_num']}</span>
+                    </div>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-3 control-label">用户名：</label>
+                    <div class="col-sm-9">
+                      <span>{$member['m_account']}</span>
+                    </div>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-3 control-label">用户昵称：</label>
+                    <div class="col-sm-9">
+                        <span>{$member['m_name']}</span>
+                    </div>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-3 control-label">性别：</label>
+                    <div class="col-sm-9">
+                        <if condition="$member['gender'] eq 男">
+                            <i>男</i>
+                            <else/>
+                            女
+                        </if>
+                    </div>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-3 control-label">身价(元/小时)：</label>
+                    <div class="col-sm-9">
+                        <span>{$member['money']}</span>
+                    </div>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-3 control-label">专长：</label>
+                    <div class="col-sm-9">
+                        <span>{$member['sks']}</span>
+                    </div>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-3 control-label">个人简介：</label>
+                    <div class="col-sm-9">
+                        <span>{$member['m_brief']}</span>
+                    </div>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-3 control-label">支付宝账号：</label>
+                    <div class="col-sm-9">
+                        <span>{$member['alipayID']}</span>
+                    </div>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-3 control-label">真实姓名：</label>
+                    <div class="col-sm-9">
+                        <span>{$member['m_realname']}</span>
+                    </div>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-3 control-label">邮箱：</label>
+                    <div class="col-sm-9">
+                       <span>{$member['m_email']}</span>
+                    </div>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-3 control-label">电话：</label>
+                    <div class="col-sm-9">
+                        <span>{$member['m_phone']}</span>
+                    </div>
+                </div>
+
+                <div class="form-group col-sm-6">
+                    <label  class="col-sm-3 control-label">所在地区：</label>
+                    <div class="col-sm-9">
+                        <span>{$member['region']}</span>
+                    </div>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-3 control-label">是否实名认证：</label>
+                    <div class="col-sm-9">
+                        <if condition="$member['status'] eq 0">
+                            <i style="color: grey">未实名</i>
+                            <elseif condition="$member['status'] eq 1"/>
+                            <i style="color: green">待审核</i>
+                            <elseif condition="$member['status'] eq 2"/>
+                            <i style="color: #B06930">已实名</i>
+                            <elseif condition="$member['status'] eq 3"/>
+                            <i style="color: red">审核不通过</i>
+                        </if>
+                    </div>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-3 control-label">是否推荐：</label>
+                    <div class="col-sm-9">
+                        <if condition="$member['is_recommend'] eq 1">
+                            <i style="color: green">是</i>
+                            <else/>
+                            否
+                        </if>
+                    </div>
+                </div>
+                <div class="form-group col-sm-6">
+                    <div class="col-sm-offset-3 col-sm-9">
+                        <button type="button" onclick="history.go(-1);" class="btn btn-default btn-primary">返回</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<include file="Public:footer"/>

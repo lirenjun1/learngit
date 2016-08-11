@@ -1,0 +1,200 @@
+<include file="Public:header"/>
+<style>
+    .form-horizontal .control-label {
+        padding-top: 0;
+    }
+</style>
+<div id="main-content" class="content">
+    <ul class="breadcrumb">
+        <li><a href="#">首页</a></li>
+    </ul>
+
+    <div class="page-header clearfix">
+        <h3>项目管理</h3>
+    </div>
+    <div id="tabs_content" class="content-box-content">
+        <div class="ul">
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">项目编号：</label>
+                    <div class="col-sm-10">
+                        <label>{$task['t_id']}</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">主题：</label>
+                    <div class="col-sm-10">
+                        <label>{$task['name']}</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">首页项目列表图片：</label>
+                    <div class="col-sm-10">
+                        <img class="picture" src="__WEBROOT__/Uploads/{$task['picture']}" width="200px" style="margin-right: 20px">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">背景介绍：</label>
+                    <div class="col-sm-10">
+                        <label>{$task['back_info']}</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">金额：</label>
+                    <div class="col-sm-10">
+                        <label>{$task['money']}元</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">人数：</label>
+                    <div class="col-sm-10">
+                        <if condition="$task['max_player_num'] elt 8">
+                            <label>{$task['players']}/{$task['max_player_num']}</label>
+                        </if>
+                        <if condition="$task['max_player_num'] gt 8">
+                            <label>无限制</label>
+                        </if>
+
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label  class="col-sm-2 control-label">投稿时间：</label>
+                    <div class="col-sm-10">
+                        <label>{$task['bid_start_time']|date='Y-m-d',###}</label>
+                        —
+                        <label>{$task['bid_end_time']|date='Y-m-d',###}</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <if condition="!empty($file[0])">
+                        <label class="col-sm-2 control-label">项目文件资料：</label>
+                        <div class="col-sm-10" data-name="file">
+                            <volist name="file" id="f" key="k">
+                                <div class="form-control file-box">
+                                    <if condition="!$f['isImg']">
+                                        <a target="_blank" href="__WEBROOT__/Uploads/{$f.url}">项目文件资料{$k}(点击下载查看)</a>
+                                        <else/>
+                                        <a href="__WEBROOT__/Uploads/{$f.url}" data-val="{$f.url}" target="_blank" class="file-img">项目图片{$k}</a>
+                                        <img src="__WEBROOT__/Uploads/{$f.url}" width="600"/>
+                                    </if>
+                                    <a class="glyphicon glyphicon-remove"></a>
+                                </div>
+                            </volist>
+                        </div>
+                    </if>
+                </div>
+                <div class="form-group">
+                    <label  class="col-sm-2 control-label">有效脑洞：</label>
+                    <div class="col-sm-10">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th style="width: 7%">脑洞ID</th>
+                                <th style="width: 8%">发布人ID</th>
+                                <th style="width: 20%">发布人邮箱</th>
+                                <th style="width: 45%">脑洞详情</th>
+                                <th style="width: 20%">发布时间</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <volist name="idea" id="Idea">
+                                <tr>
+                                    <td>{$Idea['idea_id']}</td>
+                                    <td>{$Idea['m_id']}</td>
+                                    <td>{$Idea['m_email']}</td>
+                                    <td>{$Idea['content']}</td>
+                                    <td>{$Idea['ctime']|date='Y-m-d H:i:s',###}</td>
+                                </tr>
+                            </volist>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label  class="col-sm-2 control-label">每颗脑洞金额：</label>
+                    <div class="col-sm-10" style="font-size: 14px">
+                        <label>{:round($task['money']/$ideas,2)}元({$task['money']}/{$ideas})</label>
+                    </div>
+                </div>
+                <notempty name="mingxi">
+                    <style>
+                        .jiangjin_mingxi{
+                            width: 90%;
+                            padding: 20px 50px;
+                        }
+                        .jiangjin_mingxi th{
+                            width: 100px;
+                            padding: 20px 20px 20px 0px;
+                        }
+                        .jiangjin_mingxi th img{
+                            width: 60px;
+                        }
+                        .jiangjin_mingxi td{
+                            border-left: 3px #f6f6f6 solid;
+                        }
+                        .jiangjin_mingxi td span{
+                            display: inline-block;
+                            background: gold;
+                            text-align: right;
+                            padding: 15px;
+                            white-space: nowrap;
+                            color: #000;
+                            font-size: 15px;
+                        }
+                    </style>
+                    <div class="form-group">
+                        <label  class="col-sm-2 control-label">奖金发放详情：</label>
+                        <div class="col-sm-8" style="font-size: 25px">
+                            <table class="jiangjin_mingxi">
+                                <volist name="mingxi" id="mx">
+                                    <tr>
+                                        <th><img alt="头像" src="__WEBROOT__/Uploads/Head/{$mx.m_head}"></th>
+                                        <td><span style="width: {$mx.bfb}%;">{$mx.amount}元</span></td>
+                                    </tr>
+                                </volist>
+                            </table>
+                        </div>
+                    </div>
+                </notempty>
+
+
+                <div class="form-group" style="margin-bottom: 200px">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <if condition="$task['status'] eq 3">
+                            <span style="font-size: 15px;color: green">奖金已发放完成&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                            <else />
+                            <a onclick="fenfa()" class="btn btn-default btn-primary">确认分发奖金</a>
+                        </if>
+                        <a href="javascript:history.go(-1);" class="btn btn-default btn-primary">返回</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--主页面 end-->
+    <script>
+        function fenfa(){
+            if (confirm("确认发放奖金？")){
+                $.ajax({
+                    type: 'post',
+                    url: "{:U('Task/fenfa')}",
+                    data:{
+                        't_id': "{$task['t_id']}",
+                    },
+                    success: function (data) {
+                        data = JSON.parse(data);
+                        if (data.success) {
+                            alert(data.success);
+                            var url = "{:U('Task/fafangMoney')}";
+                            window.location.href = url;
+                        }
+                        else {
+                            alert(data.error);
+                        }
+                    },
+                })
+            }
+        }
+    </script>
+</div>
+<include file="Public:footer"/>

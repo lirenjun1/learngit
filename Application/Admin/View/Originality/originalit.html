@@ -1,0 +1,142 @@
+<include file="Public:header"/>
+
+<script type="text/javascript" src="__WEBPUBLIC__/Admin/js/ajax-operate.js"></script>
+<div id="main-content" class="content">
+    <ul class="breadcrumb">
+        <li><a href="#">首页</a></li>
+        <li><a href="#">创意人管理</a></li>
+        <li class="active">申请列表</li>
+    </ul>
+    <div class="search-content">
+        <form action="{:U('Originality/originalit')}" method="post" class="search-form form-inline" role="form" style="display: inline-block">
+            <div class="form-group">
+                <label class="sr-only" for="people_id">请输入创意人编号</label>
+                <input class="earch-input form-control" id="people_id" type="text" name="people_id" placeholder="请输入创意人编号"/>　
+            </div>
+            <button type="submit" class="btn derive">查询</button>　
+        </form>
+        <form action="{:U('Originality/originalit')}" method="post" class="search-form form-inline" role="form" style="display: inline-block">
+            <div class="form-group">
+                <label class="sr-only" for="mem_id">请输入用户编号</label>
+                <input class="earch-input form-control" id="mem_id" type="text" name="mem_id" placeholder="请输入用户编号"/>　
+            </div>
+            <button type="submit" class="btn derive">查询</button>　
+        </form>
+    </div>
+    <div class="page-header clearfix">
+        <h3>创意人管理</h3>
+        <ul class="nav nav-tabs">    
+            <li class="active">
+                <a href="{:U('Originalit/apply')}">通过列表</a>
+            </li>
+        </ul>
+    </div>
+    <include file="Public:notification"/>
+    <div class="content-box-content">
+        <form action="{:U('Originality/del_originality')}" method="post" class="batch-form">
+            <table class="table table-striped table-framed table-hover">
+                <thead>
+                <tr>
+                    <th width="8%">创意人编号</th>
+                    <th width="8%">用户编号</th>
+                    <th width="10%">姓名</th>
+                    <th width="5%">性别</th>
+                    <th width="5%">年龄</th>
+                    <th width="20%">广告公司任职年期</th>
+                    <th width="20%">4A公司任职年期</th>
+                    <th width="8%">审核状态</th>
+                    <th width="10%" >&nbsp;&nbsp;操作</th>
+                </tr>
+                </thead>
+                <!--标题 end-->
+
+                <!--内容 start-->
+                <tbody class="tbody">
+                <if condition="empty($originality_list)">
+                    <tr><td colspan="10"><span style="font-size:14px;">暂无数据</span></td></tr>
+                </if>
+                <volist name="originality_list" id="apply">
+                    <tr>
+                        <td>&nbsp;&nbsp;{$apply['people_id']}</td>
+                        <td>{$apply['mem_id']}</td>
+                        <td>{$apply['people_name']}</td>
+                        <if condition="$apply['people_sex'] eq 1">
+                            <td>男</td>
+                        </if>
+                        <if condition="$apply['people_sex'] eq 0">
+                            <td>女</td>
+                        </if>
+                        <td>{$apply['people_age']}</td>
+                        <td>{$apply['people_once']}</td>
+                        <td>{$apply['people_onces']}</td>
+                        <td>
+                            <if condition="$apply['auditpass'] eq 0">
+                                <p style="color:red;">未审核</p>
+                            </if>
+                            <if condition="$apply['auditpass'] eq 1">
+                                <p style="color:#8fce35;">通过</p>
+                            </if>
+                        </td>
+                        <td>
+                            <a href="{:U('Originality/detaoriginality',array('id'=>$apply['people_id']))}">查看&nbsp;</a>
+                            <a href="{:U('Originality/del_originality',array('id'=>$apply['people_id']))}">&nbsp;删除</a>
+                        </td>   
+                    </tr>
+                </volist>
+                </tbody>
+
+                <tfoot>
+                <tr>
+                    <td colspan="20">
+
+                        <div class="fr">
+                            {$page}
+                        </div>
+                    </td>
+                </tr>
+                </tfoot>
+            </table>
+        </form>
+    </div>
+    </div>
+    <script type="text/javascript">
+    //批量删除
+       $(document).ready(function(){
+        //批量删除
+        $('.delete-batch').click(function(){
+            if(confirm('确定要执行批量删除操作吗？')){
+                var ids = [];
+                //获取选中的信息
+                $(".delCheck").each(function(){
+                    if($(this).is(":checked")){
+                        ids.push($(this).val());
+                    }
+                })
+                id = ids.join(',');
+                if(id != ''){
+                    $.ajax({
+                        'url':'{:U("Originality/deleteOriginalityAll")}',
+                        'type':'post',
+                        'data':{
+                            id:id,
+                        },
+                        success: function(data){
+                            data = JSON.parse(data);
+                            if(data.success){
+                                alert(data.success);
+                                $(".delCheck").each(function(){
+                                    $(this).attr("checked",false);
+                                })
+                                location.reload();
+                            }else{
+                                alert(data.error);
+                            }
+                        }
+                    })
+                }
+            }
+        });
+    });
+
+    </script>
+    <include file="Public:footer"/>
