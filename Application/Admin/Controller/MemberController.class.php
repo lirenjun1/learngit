@@ -35,14 +35,23 @@ class MemberController extends AdminBasicController{
         $user = M('user');
         $where['status'] = array('neq','9');
         import("ORG.Util.Page"); // 导入分页类
+<<<<<<< HEAD
         $count = $user->join('leyou_login ON leyou_login.login_id = leyou_user.login_id')->where($where)->count(); // 查询满足要求的总记录数
         $page = new \Think\Page($count,1);
+=======
+        $count = $user->join('lhl_login ON lhl_login.login_id = lhl_user.user_id')->where($where)->count(); // 查询满足要求的总记录数
+        $page = new \Think\Page($count,10);
+>>>>>>> 47ff11ed4d65fee7ec171bf03f353ea3f8e777d2
         $page->setConfig('theme', $this->setPageTheme());
         $page_info = $page->show();
 
         $this->assign('page',$page_info);// 赋值分页输出
         // 查詢沒有被刪除的
+<<<<<<< HEAD
         $data = $user->join('leyou_login ON leyou_login.login_id = leyou_user.login_id')->where($where)->limit($page->firstRow.','.$page->listRows)->select();
+=======
+        $data = $user->join('lhl_login ON lhl_login.login_id = lhl_user.user_id')->where($where)->limit($page->firstRow.','.$page->listRows)->select();
+>>>>>>> 47ff11ed4d65fee7ec171bf03f353ea3f8e777d2
 
         $this->assign('data',$data);
 
@@ -90,10 +99,28 @@ class MemberController extends AdminBasicController{
    
     
    
+<<<<<<< HEAD
     //实名信息审核视图
     public function users()
     {
         
+=======
+    //实名信息审核列表
+    public function users()
+    {
+        if(!empty($_POST['con_maccount'])){
+            $where['user_account'] = array('LIKE',"%".$_POST['con_maccount']."%");
+        }
+        if(!empty($_POST['con_memail'])){
+            $where['login_email'] = array('LIKE',"%".$_POST['con_memail']."%");
+        }
+
+
+
+
+
+
+>>>>>>> 47ff11ed4d65fee7ec171bf03f353ea3f8e777d2
         $this->display('checkMem');
     }
 
@@ -111,14 +138,22 @@ class MemberController extends AdminBasicController{
         $user = M('user');
         $where['status'] = array('eq','9');
         import("ORG.Util.Page"); // 导入分页类
+<<<<<<< HEAD
         $count = $user->join('leyou_login ON leyou_login.login_id = leyou_user.login_id')->where($where)->count(); // 查询满足要求的总记录数
+=======
+        $count = $user->join('lhl_login ON lhl_login.login_id = lhl_user.user_id')->where($where)->count(); // 查询满足要求的总记录数
+>>>>>>> 47ff11ed4d65fee7ec171bf03f353ea3f8e777d2
         $page = new \Think\Page($count,1);
         $page->setConfig('theme', $this->setPageTheme());
         $page_info = $page->show();
 
         $this->assign('page',$page_info);// 赋值分页输出
         // 查詢沒有被刪除的
+<<<<<<< HEAD
         $data = $user->join('leyou_login ON leyou_login.login_id = leyou_user.login_id')->where($where)->limit($page->firstRow.','.$page->listRows)->select();
+=======
+        $data = $user->join('lhl_login ON lhl_login.login_id = lhl_user.user_id')->where($where)->limit($page->firstRow.','.$page->listRows)->select();
+>>>>>>> 47ff11ed4d65fee7ec171bf03f353ea3f8e777d2
 
         $this->assign('data',$data);
 
@@ -126,6 +161,51 @@ class MemberController extends AdminBasicController{
     }
 
 
+<<<<<<< HEAD
+=======
+    // 用户恢复
+    public function recovery()
+    {
+
+        $login_id = $_POST['login_id'];
+        
+        $data['status'] = 0;
+        $user = M('user');
+        $where['login_id'] = $login_id;
+        $dele = $user->where($where)->save($data);
+       
+
+        if($dele){
+            $result['success'] = "恢复成功";
+        }else{
+            $result['error'] = "恢复失败，请稍后重试!";
+        }
+        echo json_encode($result);
+    }
+
+
+
+
+    // 查看用户更多资料
+    public function editmem()
+    {
+        // 实例化
+        $user = M("user");
+
+        // 获取传过来的ID
+        $where['login_id']= $_GET['login_id'];
+
+        // 联表查询用户
+        //$data = $user->join('lhl_login ON lhl_login.login_id = lhl_user.login_id')->where($where)->select();
+         $data = $user->join('lhl_login ON lhl_login.login_id = lhl_user.user_id')->where($where)->select();
+
+         $this->assign('da',$data['0']);
+
+        var_dump($data);
+        $this->display('editmem');
+    }
+
+>>>>>>> 47ff11ed4d65fee7ec171bf03f353ea3f8e777d2
      /**
      * 分页  巴拉巴拉
      * 2016.8.11

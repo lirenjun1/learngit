@@ -9,6 +9,8 @@
 <div id="main-content" class="content">
     <ul class="breadcrumb">
         <li><a href="#">首页</a></li>
+        <li class="active"><a href="">用户详情</a></li>
+        <li class="active"><a href="">{$da['user_account']}</a></li>
     </ul>
 
     <div id="tabs-content" class="content-box-content">
@@ -17,8 +19,8 @@
                 <div class="form-group col-sm-6">
                     <label class="col-sm-3 control-label">头像：</label>
                     <div class="col-sm-9">
-                        <if condition="!empty($member['m_head'])"><br/>
-                            <img src="__WEBROOT__/Uploads/Head/{$member['m_head']}" width="150px" height="150px">
+                        <if condition="!empty($da['user_img'])"><br/>
+                            <img src="__WEBROOT__/Uploads/Head/{$da['user_img']}" width="150px" height="150px">
                             <else/>
                             <img src="__WEBROOT__/Uploads/Head/default/default.jpg" width="150px" height="150px">
                         </if>
