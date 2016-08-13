@@ -15,4 +15,24 @@ class ProductController extends AdminBasicController{
     public function productadd(){
         $this->display();
     }
+    public function  producttype(){
+        $this->display();
+    }
+    public function typeadd(){
+        $request=I('get.r');
+        if(empty($request)){
+            $this->display();
+        }elseif($request=='add'){
+            $posts=I('post.');
+            var_dump( $posts);
+        }
+
+    }
+    public function productattr(){
+        $this->display();
+
+    }
+    public function attradd(){
+        $this->display();
+    }
 }

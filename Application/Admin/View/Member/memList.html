@@ -10,17 +10,18 @@
 <div id="main-content" class="content">
     <ul class="breadcrumb">
         <li><a href="#">首页</a></li>
+        <li class="active"><a href="">用户列表</a></li>
     </ul>
 
     <include file="Public:notification"/>
     <div class="search-content">
-        <form action="{:U('Member/memList')}" method="post" class="search-form form-inline" role="form">
+        <!--<form action="{:U('Member/memList')}" method="post" class="search-form form-inline" role="form">
             <div class="form-group">
                 <label class="sr-only" for="con_mid">请输入用户编号</label>
                 <input class="earch-input form-control" id="con_mid" type="text" name="con_mid" placeholder="请输入用户编号"/>　
             </div>
             <button type="submit" class="btn derive">查询</button>
-        </form>
+        </form>-->
         <form action="{:U('Member/memList')}" method="post" class="search-form form-inline" role="form">
             <div class="form-group">
                 <label class="sr-only" for="con_maccount">请输入用户名</label>
@@ -45,10 +46,11 @@
                     <th width="5%">注册时间</th>
                     <th width="5%">用户名</th>
                     <th width="5%">邮箱</th>
-                    <th width="8%">是否是商家</th>
-                    <th width="8%">身价（元/小时）</th>
-                    <th width="5%">是否推荐</th>
-                    <th width="8%">是否实名认证</th>
+                    <th width="5%">手机号</th>
+                    <th width="6%">支付宝账号</th>
+                    <th width="3%">是否是商家</th>
+                    <th width="3%">是否实名认证</th>
+                    
                     <th width="10%">操作</th>
                 </tr>
                 </thead>
@@ -60,40 +62,45 @@
                 </if>
                 <volist name="data" id="da">
                     <tr>
-                        <td><input type="checkbox" class="delCheck" value="{$member['m_id']}"/>&nbsp;&nbsp;{$da['login_id']}</td>
+                        <td><input type="checkbox" class="delCheck" value="{$da['login_id']}"/>&nbsp;&nbsp;{$da['login_id']}</td>
                         <td>{$da['r_time']|date='Y-m-d H:i:s',###}</td>
                         <td>{$da['user_account']|default="未填写用户名"}</td>
-                        <td>{$da['login_email ']}</td>
-                        <td>{$da['region']}</td>
-                        <td>{$da['money']}</td>
+                        <td>{$da['login_email']}</td>
+                        <td>{$da['login_number']}</td>
+                        <td>{$da['alipayid']}</td>
                         <td>
-                            <if condition="$member['is_recommend'] eq 1">
-                                <i style="color: green">是</i>
+                            <if condition="$da['user_business'] eq 0">
+                                <i style="color: green">不是</i>
                                 <else/>
-                                否
+                                是
                             </if>
                         </td>
                         <td>
-                            <if condition="$member['status'] eq 0">
+                            <if condition="$da['user_business'] eq 0">
                                 <i style="color: grey">未实名</i>
-                                <elseif condition="$member['status'] eq 1"/>
+                                <elseif condition="$da['user_business'] eq 1"/>
                                 <i style="color: green">待审核</i>
-                                <elseif condition="$member['status'] eq 2"/>
+                                <elseif condition="$da['user_business'] eq 2"/>
                                 <i style="color: #B06930">已实名</i>
-                                <elseif condition="$member['status'] eq 3"/>
+                                <elseif condition="$da['user_business'] eq 3"/>
                                 <i style="color: red">审核不通过</i>
                             </if>
                         </td>
+                       
+                        
                         <td>
-                            <a href="{:U('Member/editmem',array('m_id'=>$member['m_id']))}">更多</a>
+                            <a href="{:U('Member/editmem',array('login_id'=>$da['login_id']))}">更多</a>
                             &nbsp;&nbsp;
-                            <a href="{:U('Member/deleteMem',array('m_id'=>$member['m_id']))}">删除</a>
-                            <if condition="$member['is_recommend'] neq 1">
+                            <if condition="$da['status'] eq 9">
+                                <a href="" name="{$da['login_id']}" class="huifu">恢复</a>
+                            </if>
+                            <if condition="$da['status'] neq 9">
+                                <a href="" name="{$da['login_id']}" class="shanchu">删除</a>
+                            </if>
+                            
+                            <if condition="$da['user_business'] eq 1">
                                 &nbsp;&nbsp;
-                                <a href="{:U('Member/isRecommend',array('m_id'=>$member['m_id'],'isReco'=>1))}">推荐</a>
-                                <else />
-                                &nbsp;&nbsp;
-                                <a href="{:U('Member/isRecommend',array('m_id'=>$member['m_id'],'isReco'=>0))}">取消推荐</a>
+                                <a href="{:U('Member/deleteMem',array('login_id'=>$da['login_id']))}">查看店铺</a>
                             </if>
                         </td>
                     </tr>
@@ -117,6 +124,64 @@
 </div>
 
 <script type="text/javascript">
+    $(document).ready(function(){
+        $('.shanchu').click(function(){
+              if(confirm('确定要删除吗？')){
+                
+                var login_id = $(this).attr("name");
+                $.ajax({
+                    'url':'{:U("Member/deleteMem")}',
+                    'type':'post',
+                    'data':{
+                        login_id:login_id,
+                    },
+                    success: function(data){
+                        data = JSON.parse(data);
+                        if(data.success){
+                            alert(data.success);
+                            $(".delCheck").each(function(){
+                                $(this).attr("checked",false);
+                            })
+                            location.reload();
+                        }else{
+                            alert(data.error);
+                        }
+                    }
+                })
+                
+              }  
+        });
+
+        // 恢复
+        $('.huifu').click(function(){
+              if(confirm('确定要恢复吗？')){
+                
+                var login_id = $(this).attr("name");
+                $.ajax({
+                    'url':'{:U("Member/deleteMem")}',
+                    'type':'post',
+                    'data':{
+                        login_id:login_id,
+                    },
+                    success: function(data){
+                        data = JSON.parse(data);
+                        if(data.success){
+                            alert(data.success);
+                            $(".delCheck").each(function(){
+                                $(this).attr("checked",false);
+                            })
+                            location.reload();
+                        }else{
+                            alert(data.error);
+                        }
+                    }
+                })
+                
+              }  
+        });
+
+    });
+
     $(document).ready(function(){
         //批量删除
         $('.delete-batch').click(function(){
