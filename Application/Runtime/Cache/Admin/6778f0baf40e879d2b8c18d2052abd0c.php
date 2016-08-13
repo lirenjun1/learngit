@@ -22,11 +22,7 @@
                         <span class="hidden-minibar">首页</span>
                     </a>
                 </li>
-<<<<<<< HEAD
-=======
-               
-               
->>>>>>> 47ff11ed4d65fee7ec171bf03f353ea3f8e777d2
+
                 <li>
                     <a href="javascript:;" class="nav-top-item">
                         <span class="icon glyphicon glyphicon-user"></span>
