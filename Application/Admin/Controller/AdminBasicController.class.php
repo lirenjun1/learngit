@@ -79,5 +79,38 @@ class AdminBasicController extends Controller {
         $page_number = D('Config')->where(array('conf_id'=>1))->getField('page_number');
         return $page_number;
     }
-
+//单文件上传
+    public function upload1($img,$dir){
+        $upload = new \Think\Upload();// 实例化上传类
+        $upload->maxSize   =     3145728 ;// 设置附件上传大小
+        $upload->exts      =     array('jpg', 'gif', 'png', 'jpeg');// 设置附件上传类型
+        $upload->rootPath  =      './Application/Public/'; // 设置附件上传根目录
+        $upload->savePath =      'Uploads/'.$dir.'/'; // 设置附件上传根目录
+        // 上传单个文件
+        $info   =   $upload->uploadOne($img);
+        if(!$info) {// 上传错误提示错误信息
+            return 'false';
+        }else{// 上传成功 获取上传文件信息
+            return $info['savepath'].$info['savename'];
+        }
+    }
+    //多图片上传
+    public function upload($dir){
+        $upload = new \Think\Upload();// 实例化上传类
+        $upload->maxSize   =     3145728 ;// 设置附件上传大小
+        $upload->exts      =     array('jpg', 'gif', 'png', 'jpeg');// 设置附件上传类型
+        $upload->rootPath  =    './Application/Public/Uploads/'.$dir.'/'; // 设置附件上传根目录
+        $upload->savePath  =     ''; // 设置附件上传（子）目录
+        // 上传文件
+        $info   =   $upload->upload();
+        if(!$info) {// 上传错误提示错误信息
+            $this->error($upload->getError());
+        }else{// 上传成功
+            $img[]=$info['savepath'].$info['savename'];
+//            foreach($info as $file){
+//                $img[]=$file['savepath'].$file['savename'];
+//            }
+            return $img;
+        }
+    }
 }

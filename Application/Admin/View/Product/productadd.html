@@ -19,72 +19,115 @@
         <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">产品相册</a></li>
         <li role="presentation"><a href="#jieshao" aria-controls="jieshao" role="tab" data-toggle="tab">产品介绍</a></li>
     </ul>
-    <form class="form-horizontal">
+    <form action="{:U('Admin/Product/productadd',array('r'=>'add'))}" method="post" enctype="multipart/form-data">
+    <div class="form-horizontal">
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane fade in active" id="home">
 
                 <div class="form-group">
                     <label for="inputText3" class="col-sm-2 control-label">产品名称</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="inputText3" placeholder="产品名称">
+                        <input type="text" class="form-control" name="cmdinfo['cmdinfo_name']" id="inputText3" placeholder="产品名称">
                         <p class="help-block" style="color: red">必填产品名称</p>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="inputText4" class="col-sm-2 control-label">产品货号</label>
-                    <div class="col-sm-10 ">
-                        <input type="text" class="form-control" id="inputText4" placeholder="产品货号">
-                        <p class="help-block" style="color: red">如果为空则会自动生成</p>
-                    </div>
-                </div>
+
             <div class="form-group">
-                <label for="select" class="col-sm-2 control-label">产品类型</label>
+                <label  class="col-sm-2 control-label">产品类型</label>
                 <div class="col-sm-10">
-                    <select class="form-control" id="select">
-                        <option>请选择</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
+                    <select class="form-control" name="cmdinfo['cmd_id']" id="type">
+                        <option value="0">请选择</option>
+
+                        <foreach name="prt" item="pr">
+                            <eq name="pr['cmd_fid']" value="0">
+                                <option value="{$pr['cmd_id']}">{$pr['cmd_name']}</option>
+                                <foreach name="prt" item="pr1">
+                                    <eq name="pr1['cmd_fid']" value="$pr['cmd_id']">
+
+                                        <option value="{$pr1['cmd_id']}"> &nbsp;&nbsp;&nbsp;&nbsp;{$pr1['cmd_name']}</option>
+                                    </eq>
+                                </foreach>
+                            </eq>
+                        </foreach>
                     </select>
                 </div>
             </div>
             <div class="form-group">
-                <label for="select1" class="col-sm-2 control-label">所属商家</label>
+                <label for="select1" name="cmdinfo['cmdinfo_sjno']" class="col-sm-2 control-label">所属商家</label>
                 <div class="col-sm-10">
                     <select class="form-control" id="select1">
                         <option>请选择</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
+                        <foreach name="shj" item="shj1">
+
+                            <option value="{$shj1['id']}">{$shj1['name']}</option>
+                        </foreach>
                     </select>
                 </div>
             </div>
             <div class="form-group">
                 <label for="inputText5" class="col-sm-2 control-label">产品价格</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="inputText5" placeholder="保留两位小数">
+                    <input type="text" name="cmdinfo['cmdinfo_price']" class="form-control" id="inputText5" placeholder="保留两位小数">
                     <p class="help-block" style="color: red">保留两位小数</p>
                 </div>
             </div>
             <div class="form-group">
-                <label for="exampleInputFile" class="col-sm-2 control-label">产品主图</label>
+                <label for="exampleInputFile"  class="col-sm-2 control-label">产品主图</label>
                <div class="col-sm-10">
-                <input type="file"  id="exampleInputFile">
+                <input type="file" name="imgs"  id="exampleInputFile">
                    <p class="help-block" style="color: red">图片不能为空</p>
             </div>
             </div>
         </div>
+
         <div role="tabpanel" class="tab-pane fade" id="profile">
-            <textarea class="form-control" rows="5"></textarea>
+            <textarea class="form-control" name="cmdinfo['cmdinfo_br']" rows="5"></textarea>
         </div>
-        <div role="tabpanel" class="tab-pane fade" id="messages">..ffgggg.</div>
-        <div role="tabpanel" class="tab-pane fade" id="settings">..hhhhhh.</div>
+
+
+        <div role="tabpanel" class="tab-pane fade" id="messages">
+            <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade in active" id="home1">
+                <div class="form-group">
+                    <label for="" class="col-sm-2 control-label">添加属性</label>
+                    <div class="col-sm-10">
+                        <div>
+                        <span class="glyphicon glyphicon-plus  jia1" onclick="jia1(this)" aria-hidden="true" style="float: left;cursor: pointer;margin-right: 15px; "></span>
+                        <span class="glyphicon glyphicon-minus jian" onclick="jian(this)" aria-hidden="true" style="float: left;cursor: pointer;margin-right: 15px;"></span>
+                        <select  name="attr[]" id="attr">
+
+                        </select>
+                        <input type="text" name="attr_name[]" placeholder="属性名称">
+                        <input type="text" name="attr_price[]"  placeholder="属性价格">
+                        </div>
+                    </div>
+
+
+                </div>
+                </div>
+            </div>
+        </div>
+
+        <div role="tabpanel" class="tab-pane fade" id="settings">
+            <div class="form-group">
+                <label for="exampleInputFile" class="col-sm-2 control-label">产品图片</label>
+                <div class="col-sm-10">
+                    <div>
+                        <span class="glyphicon glyphicon-plus jia2" onclick="jia2(this)" aria-hidden="true"style="float: left;cursor: pointer;margin-right: 15px;"></span>
+
+                        <span class="glyphicon glyphicon-minus jian" onclick="jian(this)" aria-hidden="true" style="float: left;cursor: pointer;margin-right: 15px;"></span>
+                        <input name="photo[]" type="file"   >
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
         <div role="tabpanel" class="tab-pane fade" id="jieshao">
         <div class="form-group">
             <label for="container" class="col-sm-2 control-label">商品介绍:</label> <br>
-            <script id="container"style="width: 95%;height: 400px;margin: 20px auto;" name="introduce" type="text/plain">
+            <script id="container"style="width: 95%;height: 400px;margin: 20px auto;" name="cmdinfo_introduce" type="text/plain">
 
             </script>
         </div>
@@ -95,6 +138,63 @@
                 <button type="submit" class="btn btn-primary">保存</button>
             </div>
         </div>
+        </div>
         </form>
 
 </div>
+
+<script type="text/javascript">
+    function  jia1(t) {
+        //alert('dddddddd');
+        var top3= $(t).parent();
+        var htm=top3.html();
+        top3.after('<div>'+htm+'</div>');
+
+    }
+    function jia2(t) {
+    var top1=$(t).parent();
+    var htm1=top1.html();
+    top1.after('<div>'+htm1+'</div>');
+}
+    function jian(t) {
+        var j2=$(t).parent();
+        var n=j2.index();
+        if(n==0){
+
+        }else {
+            j2.remove();
+        }
+    }
+</script>
+<!--根据所选类型查出属性-->
+<script type="text/javascript">
+    $("#type").change(function(){
+        var typeid = $(this).val(); //获取切换的类别的id
+        $.ajax({
+            cache:false,
+            type:"post",
+            url:'{:U("Product/ajax")}',
+            dataType:"JSON",
+            data:{id:typeid},
+            timeout:30000,
+            error:function(){
+//                alert('ddd');
+            },
+            success:function(data) {
+               var data1= JSON.parse(data);
+//                alert(data1[1]['id']);
+               var trs = "";
+//                alert(data1.length);
+                $('#attr option[value!=""]').remove(); //清空option 每次改变option的时候载入新的数据
+                $.each(data1,function (index,value) {
+//                    alert(index);
+                   trs = "<option value="+value.id+">"+value.name+"</option>";
+                    $(trs).appendTo("#attr");
+                });
+
+
+            }
+        });
+
+    });
+</script>

@@ -6,9 +6,9 @@ use Think\Model;
  * Class CaseModel
  * @package Common\Model
  */
-class CmdModel extends Model {
+class AttrModel extends Model {
 
-    public function addtype($data){
+    public function addattr($data){
         if(empty($data)){
             return false;
         }else{

@@ -15,33 +15,42 @@
     <ul class="nav nav-tabs" role="tablist">
         <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">添加产品类型</a></li>
     </ul>
-    <form action="{:U('Product/typeadd',array('r'=>'add'))}" class="form-horizontal" method="post" >
+    <form action="{:U('Product/typeadd',array('r'=>'add'))}" enctype="multipart/form-data" class="form-horizontal" method="post" >
+
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane fade in active" id="home">
 
                 <div class="form-group">
                     <label for="inputText3" class="col-sm-2 control-label">类型名称</label>
                     <div class="col-sm-10">
-                        <input type="text" name="name" class="form-control" id="inputText3" placeholder="类型名称">
+                        <input type="text" name="cmd_name" class="form-control" id="inputText3" placeholder="类型名称">
                         <p class="help-block" style="color: red">必填类型名称</p>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="exampleInputFile" class="col-sm-2 control-label">类型logo</label>
+                    <label for="exampleInputFile"  class="col-sm-2 control-label">类型logo</label>
                     <div class="col-sm-10">
-                        <input type="file"  id="exampleInputFile">
+                        <input type="file"  name="img" id="exampleInputFile">
 
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="select"  class="col-sm-2 control-label">上级类型</label>
                     <div class="col-sm-10">
-                        <select class="form-control" name="parentid" id="select">
+                        <select class="form-control" name="cmd_fid" id="select">
                             <option value="0">请选择</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
+
+                            <foreach name="prt" item="pr">
+                              <eq name="pr['cmd_fid']" value="0">
+                                <option value="{$pr['cmd_id']}">{$pr['cmd_name']}</option>
+                                <foreach name="prt" item="pr1">
+                                    <eq name="pr1['cmd_fid']" value="$pr['cmd_id']">
+
+                                    <option value="{$pr1['cmd_id']}"> &nbsp;&nbsp;&nbsp;&nbsp;{$pr1['cmd_name']}</option>
+                                    </eq>
+                                </foreach>
+                              </eq>
+                            </foreach>
                         </select>
                     </div>
                 </div>

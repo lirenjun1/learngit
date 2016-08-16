@@ -26,6 +26,7 @@ return array(
     'TMPL_PARSE_STRING'     => array(
         '__WEBROOT__'       => __ROOT__,
         '__WEBPUBLIC__'     => __ROOT__.'/Public',
+        '__WEBUPL__'     => __ROOT__.'/Application/Public',
     ),
 
 );
