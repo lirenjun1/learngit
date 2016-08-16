@@ -170,67 +170,7 @@ class MemberCenterController extends AdminBasicController{
         echo json_encode($result);
     }
 
-    /*
-     * 获奖证书上传操作
-     */
-    public function uploadPrize(){
-        $upload = new \Think\Upload();// 实例化上传类
-        $upload->maxSize   =     3145728 ;// 设置附件上传大小
-        $upload->exts      =     array('jpg', 'png', 'jpeg','PDF');// 设置附件上传类型
-        $upload->rootPath  =     ''; // 设置附件上传根目录
-        $upload->subName   =  array('date', 'Ymd'); //子目录创建方式，[0]-函数名，[1]-参数，多个参数使用数组
-        $upload->savePath = '/Prize/'; // 设置附件上传（子）目录
-        // 上传文件
-        $info = $upload->upload();
-        if (!$info) {// 上传错误提示错误信息
-            $result['error'] = $upload->error;
-        } else {// 上传成功
-            $result['success'] = '上传成功！';
-            $fileurl = $info['Filedata']['savepath'].$info['Filedata']['savename'];
-
-            $result['fileurl'] = $fileurl;
-        }
-        echo json_encode($result);
-    }
-
-
-
-    function sharArticle(){
-        
-        if($_POST['work-article-name'] == ''){
-            $result['error'] = "文章标题不能为空，请填写后再发布！";
-            echo json_encode($result);
-            return;
-        }elseif($_POST['work-article-content'] == ''){
-            $result['error'] = "文章内容不能为空，请填写后再发布！";
-            echo json_encode($result);
-            return;
-        }elseif($_POST['work-article-head-url'] == ''){
-            $result['error'] = "请上传文章封面图后再发布！";
-            echo json_encode($result);
-            return;
-        }
-
-        $name = $_POST['work-article-name'];
-        $article = $_POST['work-article-content'];
-        $headurl = $_POST['work-article-head-url'];
-        $has_video = $_POST['has_video'];
-
-        $data['name'] = $name;
-        $data['status_but'] = 1;
-        $data['type'] = 3;
-        $data['article'] = $article;
-        $data['has_video'] = $has_video;
-        $data['article_head'] = $headurl;
-        $work_id = $this->work_obj->addWork($data);
-        if($work_id){
-            $result['success'] = "分享成功!";
-        }else{
-            $result['error'] = "分享失败，请重试！";
-        }
-        echo json_encode($result);
-    }
-
+   
 
     /**
      * 缩放图片

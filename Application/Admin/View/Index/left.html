@@ -29,24 +29,27 @@
                         
                     </ul>
                 </li>
-
                 <li>
                     <a href="javascript:;" class="nav-top-item">
-                        <span class="icon glyphicon glyphicon-home"></span>
-                        <span class="hidden-minibar">店铺管理</span>
+                        <span class="icon glyphicon glyphicon-tasks"></span>
+                        <span class="hidden-minibar">订单管理</span>
                         <span class="arrow glyphicon glyphicon-chevron-down"></span>
                     </a>
                     <ul>
                         <li>
-                            <a href="{:U('Member/memList')}" target="main">店铺列表</a>
+                            <a href="{:U('Detauls/already')}" target="main">已下单</a>
                         </li>
                         <li>
-                            <a href="{:U('Member/userlist')}" target="main">店铺审核</a>
+                            <a href="{:U('Detauls/backorders')}" target="main">待发货</a>
                         </li>
+                        <li>
+                            <a href="{:U('Detauls/delivered')}" target="main">已发货</a>
+                        </li>
+                        <li>
+                            <a href="{:U('Detauls/dealgoes')}" target="main">交易完成</a>
+                        </li>    
                     </ul>
                 </li>
-               
-
                 <li>
                     <a href="javascript:;" class="nav-top-item">
                         <span class="icon glyphicon glyphicon-envelope"></span>

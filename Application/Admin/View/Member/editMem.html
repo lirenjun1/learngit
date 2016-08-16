@@ -10,7 +10,7 @@
     <ul class="breadcrumb">
         <li><a href="#">首页</a></li>
         <li class="active"><a href="">用户详情</a></li>
-        <li class="active"><a href="">{$da['user_account']}</a></li>
+        <li class="active"><a href="">{$da['user_account']}用户的详细资料</a></li>
     </ul>
 
     <div id="tabs-content" class="content-box-content">
@@ -30,8 +30,8 @@
                 <div class="form-group col-sm-6">
                     <label class="col-sm-3 control-label">手持身份证：</label>
                     <div class="col-sm-9">
-                        <if condition="!empty($member['id_card_a'])"><br/>
-                            <img src="__WEBROOT__/Uploads/{$member['id_card_a']}" width="200px">
+                        <if condition="!empty($da['user_identity_c'])"><br/>
+                            <img src="__WEBROOT__/Uploads/{$da['user_identity_c']}" width="200px">
                             <else/>
                             待完善
                         </if>
@@ -40,8 +40,8 @@
                 <div class="form-group col-sm-6">
                     <label class="col-sm-3 control-label">身份证正面：</label>
                     <div class="col-sm-9">
-                        <if condition="!empty($member['id_card_p'])"><br/>
-                            <img src="__WEBROOT__/Uploads/{$member['id_card_p']}" width="200px">
+                        <if condition="!empty($da['user_identity_a'])"><br/>
+                            <img src="__WEBROOT__/Uploads/{$da['user_identity_a']}" width="200px">
                             <else/>
                             待完善
                         </if>
@@ -50,8 +50,8 @@
                 <div class="form-group col-sm-6">
                     <label class="col-sm-3 control-label">身份证背面：</label>
                     <div class="col-sm-9">
-                        <if condition="!empty($member['id_card_o'])"><br/>
-                            <img src="__WEBROOT__/Uploads/{$member['id_card_o']}" width="200px">
+                        <if condition="!empty($da['user_identity_b'])"><br/>
+                            <img src="__WEBROOT__/Uploads/{$da['user_identity_b']}" width="200px">
                             <else/>
                             待完善
                         </if>
@@ -60,90 +60,70 @@
                 <div class="form-group col-sm-6">
                     <label class="col-sm-3 control-label">身份证号码：</label>
                     <div class="col-sm-9">
-                        <span>{$member['card_num']}</span>
+                        <span>{$da['identity']}</span>
                     </div>
                 </div>
-                <div class="form-group col-sm-6">
-                    <label class="col-sm-3 control-label">用户名：</label>
-                    <div class="col-sm-9">
-                      <span>{$member['m_account']}</span>
-                    </div>
-                </div>
+               
                 <div class="form-group col-sm-6">
                     <label class="col-sm-3 control-label">用户昵称：</label>
                     <div class="col-sm-9">
-                        <span>{$member['m_name']}</span>
+                        <span>{$da['user_account']}</span>
                     </div>
                 </div>
                 <div class="form-group col-sm-6">
                     <label class="col-sm-3 control-label">性别：</label>
                     <div class="col-sm-9">
-                        <if condition="$member['gender'] eq 男">
+                       <if condition="$da['user_age'] eq 1">
                             <i>男</i>
-                            <else/>
-                            女
+                        <elseif condition="$da['user_age'] eq 2"/>
+                            <i>女</i>
+                        <elseif condition="$da['user_age'] eq 3"/>
+                            <i>保密</i>
                         </if>
                     </div>
                 </div>
                 <div class="form-group col-sm-6">
-                    <label class="col-sm-3 control-label">身价(元/小时)：</label>
+                    <label class="col-sm-3 control-label">年龄：</label>
                     <div class="col-sm-9">
-                        <span>{$member['money']}</span>
+                        <span>{$da['user_age']}</span>
                     </div>
                 </div>
-                <div class="form-group col-sm-6">
-                    <label class="col-sm-3 control-label">专长：</label>
-                    <div class="col-sm-9">
-                        <span>{$member['sks']}</span>
-                    </div>
-                </div>
-                <div class="form-group col-sm-6">
-                    <label class="col-sm-3 control-label">个人简介：</label>
-                    <div class="col-sm-9">
-                        <span>{$member['m_brief']}</span>
-                    </div>
-                </div>
+                
                 <div class="form-group col-sm-6">
                     <label class="col-sm-3 control-label">支付宝账号：</label>
                     <div class="col-sm-9">
-                        <span>{$member['alipayID']}</span>
+                        <span>{$da['alipayid']}</span>
                     </div>
                 </div>
                 <div class="form-group col-sm-6">
                     <label class="col-sm-3 control-label">真实姓名：</label>
                     <div class="col-sm-9">
-                        <span>{$member['m_realname']}</span>
+                        <span>{$da['user_name']}</span>
                     </div>
                 </div>
                 <div class="form-group col-sm-6">
                     <label class="col-sm-3 control-label">邮箱：</label>
                     <div class="col-sm-9">
-                       <span>{$member['m_email']}</span>
+                       <span>{$da['login_email']}</span>
                     </div>
                 </div>
                 <div class="form-group col-sm-6">
                     <label class="col-sm-3 control-label">电话：</label>
                     <div class="col-sm-9">
-                        <span>{$member['m_phone']}</span>
+                        <span>{$da['login_number']}</span>
                     </div>
                 </div>
 
                 <div class="form-group col-sm-6">
-                    <label  class="col-sm-3 control-label">所在地区：</label>
-                    <div class="col-sm-9">
-                        <span>{$member['region']}</span>
-                    </div>
-                </div>
-                <div class="form-group col-sm-6">
                     <label class="col-sm-3 control-label">是否实名认证：</label>
                     <div class="col-sm-9">
-                        <if condition="$member['status'] eq 0">
+                        <if condition="$da['user_status'] eq 0">
                             <i style="color: grey">未实名</i>
-                            <elseif condition="$member['status'] eq 1"/>
+                            <elseif condition="$da['user_status'] eq 1"/>
                             <i style="color: green">待审核</i>
-                            <elseif condition="$member['status'] eq 2"/>
+                            <elseif condition="$da['user_status'] eq 2"/>
                             <i style="color: #B06930">已实名</i>
-                            <elseif condition="$member['status'] eq 3"/>
+                            <elseif condition="$da['user_status'] eq 3"/>
                             <i style="color: red">审核不通过</i>
                         </if>
                     </div>
