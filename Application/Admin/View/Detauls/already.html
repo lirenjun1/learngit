@@ -10,7 +10,7 @@
 <div id="main-content" class="content">
     <ul class="breadcrumb">
         <li><a href="#">首页</a></li>
-        <li class="active"><a href="">已下单</a></li>
+        <li class="active"><a href="">{$order}</a></li>
     </ul>
 
     <include file="Public:notification"/>
@@ -27,6 +27,13 @@
             <div class="form-group">
                 <label class="sr-only" for="con_maccount">请输入ID号</label>
                 <input class="earch-input form-control" id="order_id" type="text" name="order_id" placeholder="请输入ID号"/>　
+            </div>
+            <button type="submit" class="btn derive">查询</button>
+        </form>
+         <form action="{:U('Detauls/already')}" method="post" class="search-form form-inline" role="form">
+            <div class="form-group">
+                <label class="sr-only" for="con_maccount">请输入用户的ID号</label>
+                <input class="earch-input form-control" id="login_id" type="text" name="login_id" placeholder="请输入用户的ID号"/>　
             </div>
             <button type="submit" class="btn derive">查询</button>
         </form>
@@ -54,41 +61,44 @@
                 </if>
                 <volist name="data" id="da">
                     <tr>
-                        <td><input type="checkbox" class="delCheck" value="{$da['login_id']}"/>&nbsp;&nbsp;{$da['login_id']}</td>
-                        <td>{$da['r_time']|date='Y-m-d H:i:s',###}</td>
+                        <td><input type="checkbox" class="delCheck" value="{$da['login_id']}"/>&nbsp;&nbsp;{$da['order_id']}</td>
+                        <td>{$da['order_number']}</td>
                         <td>{$da['user_account']|default="未填写用户名"}</td>
-                        <td>{$da['login_email']}</td>
-                        <td>{$da['login_number']}</td>
-                        <td>{$da['alipayid']}</td>
-
-                       
-
+                        <td>{$da['order_time']|date='Y-m-d H:i:s',###}</td>
                         <td>
-                            <if condition="$da['user_status'] eq 0">
-                                <i style="color: grey">未实名</i>
-                                <elseif condition="$da['user_status'] eq 1"/>
-                                <i style="color: green">待审核</i>
-                                <elseif condition="$da['user_status'] eq 2"/>
-                                <i style="color: #B06930">已实名</i>
-                                <elseif condition="$da['user_status'] eq 3"/>
-                                <i style="color: red">审核不通过</i>
+                            <if condition="$da['order_ptime'] neq 0">
+                                <i>{$da['order_ptime']|date='Y-m-d H:i:s',###}</i>
+                            <elseif condition="$da['order_ptime'] eq 0"/>
+                                <i style="color: green">未付款</i>
+                            </if>
+                        <td>
+                            <if condition="$da['order_pmethod'] eq 0">
+                                <i>未付款</i>
+                                <elseif condition="$da['order_pmethod'] eq 1"/>
+                                <i>支付宝</i>
+                                <elseif condition="$da['order_pmethod'] eq 2"/>
+                                <i>微信</i>
                             </if>
                         </td>
-                       
+                        <td>
+                            <if condition="$da['order_status'] eq 0">
+                                <i>未付款</i>
+                                <elseif condition="$da['order_status'] eq 1"/>
+                                <i>待发货</i>
+                                <elseif condition="$da['order_status'] eq 2"/>
+                                <i>已发货</i>
+                                <elseif condition="$da['order_status'] eq 3"/>
+                                <i>交易完成</i>
+                                <elseif condition="$da['order_status'] eq 9"/>
+                                <i>订单取消</i>
+                            </if>
+                       </td>
                         
                         <td>
-                            <a href="{:U('Member/editmem',array('login_id'=>$da['login_id']))}">更多</a>
+                            <a href="{:U('Detauls/editmem',array('order_id'=>$da['order_id']))}">查看详情</a>
                             &nbsp;&nbsp;
-                            <if condition="$da['status'] eq 9">
-                                <a href="" name="{$da['login_id']}" class="huifu">恢复</a>
-                            </if>
-                            <if condition="$da['status'] neq 9">
-                                <a href="" name="{$da['login_id']}" class="shanchu">删除</a>
-                            </if>
-                            
-                            <if condition="$da['user_business'] eq 1">
-                                &nbsp;&nbsp;
-                                <a href="{:U('Member/deleteMem',array('login_id'=>$da['login_id']))}">查看店铺</a>
+                            <if condition="$da['order_status'] eq 0">
+                                <a href="" name="{$da['order_id']}" class="shanchu">取消订单</a>
                             </if>
                         </td>
                     </tr>
@@ -98,7 +108,7 @@
                 <tr>
                     <td colspan="20">
                         <div class="bulk-actions fl">
-                            <input type="button" class="btn delete-batch" value="批量删除">　
+                            <input type="button" class="btn delete-batch" value="批量取消订单">　
                         </div>
                         <div class="fr">
                             {$page}

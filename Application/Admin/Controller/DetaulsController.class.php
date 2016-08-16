@@ -18,9 +18,12 @@ class DetaulsController extends AdminBasicController{
    
     }
 	
-	// 已下单
+	// 全部订单
 	public function already()
     {
+        $management = "全部订单";
+        $this->assign('order',$management);    // 标题输出
+
         // 获取传过来的数据
         if(!empty($_POST['order_number'])){
             $where['order_number'] = array('LIKE',"%".$_POST['order_number']."%");
@@ -30,28 +33,73 @@ class DetaulsController extends AdminBasicController{
             $where['order_id'] = array('LIKE',"%".$_POST['order_id']."%");
 
         }
-        // 查询下单未付款的
-       
-        $where['order_status'] = array('0');
+        if(!empty($_POST['login_id'])){
+            $where['login_id'] = array('LIKE',"%".$_POST['login_id']."%");
 
-        $orde = $this->order->addata($where);
+        }
+        // 已下单待处理    状态为0表示已经下单  但是没有付款
+        // $where['order_status'] = array(0);
         
-        
-
-        var_dump($orde);
+        $orde = $this->order->addata($where);   // addata  是查询操作
+    
+        $this->assign('page',$orde['page']);    // 赋值分页输出
+        $this->assign('data',$orde['data']);    // 赋值输出
         // 渲染模版
         $this->display('already');
     }
 
 
-     /**
-     * 分页  巴拉巴拉
-     * 2016.8.15
-     */
-    private function setPageTheme()
+    // 待发货
+    public function backorders()
     {
-        $theme = "<ul class='pagination'><li>%TOTAL_ROW%</li><li>%UP_PAGE%</li>%LINK_PAGE%<li>%DOWN_PAGE%</li></ul>";
-        return $theme;
+        $management = "待发货";
+        $this->assign('order',$management);    // 标题输出
+
+        $where['order_status'] = array(1);       // 订单状态   1表示待发货状态
+
+        $orde = $this->order->addata($where);       // addata  是查询操作
+    
+        $this->assign('page',$orde['page']);    // 赋值分页输出
+        $this->assign('data',$orde['data']);    // 赋值输出
+
+
+
+        $this->display('already');
     }
+
+    // 已发货
+    public function delivered(){
+        $management = "已发货";
+        $this->assign('order',$management);    // 标题输出
+
+        $where['order_status'] = array(2);       // 订单状态   2表示已发货状态
+
+        $orde = $this->order->addata($where);       // addata  是查询操作
+    
+        $this->assign('page',$orde['page']);    // 赋值分页输出
+        $this->assign('data',$orde['data']);    // 赋值输出
+
+
+
+        $this->display('already');
+    }
+
+    // 已发货
+    public function dealgoes(){
+        $management = "交易完成";
+        $this->assign('order',$management);    // 标题输出
+
+        $where['order_status'] = array(3);       // 订单状态   3表示已发货状态
+
+        $orde = $this->order->addata($where);       // addata  是查询操作
+    
+        $this->assign('page',$orde['page']);    // 赋值分页输出
+        $this->assign('data',$orde['data']);    // 赋值输出
+
+
+
+        $this->display('already');
+    }
+    
    
 }
