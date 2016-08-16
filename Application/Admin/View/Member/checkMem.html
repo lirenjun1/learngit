@@ -24,6 +24,7 @@
 <div id="main-content" class="content">
     <ul class="breadcrumb">
         <li><a href="#">首页</a></li>
+        <li class="active"><a href="">实名认证列表</a></li>
     </ul>
 
     <include file="Public:notification"/>
@@ -66,42 +67,41 @@
             </tr>
             </thead>
             <tbody class="tbody">
-            <if condition="empty($member_list)">
+            <if condition="empty($data)">
                 <tr>
                     <td colspan="20"><span style="font-size:14px;">暂无数据</span></td>
                 </tr>
             </if>
-            <volist name="member_list" id="member_list">
+            <volist name="data" id="da">
                 <tr>
-                    <td>{$member_list['m_id']}</td>
-                    <td>{$member_list['m_realname']}</td>
-                    <td>{$member_list['m_email']}</td>
+                    <td>{$da['user_id']}</td>
+                    <td>{$da['user_name']}</td>
+                    <td>{$da['login_email']}</td>
                     <td>
-                        <a class="underline pop">{:basename($member_list['id_card_p'])}</a>
+                        <a class="underline pop">{:basename($da['user_identity_a'])}</a>
                         <div class='img-position' style="display:none;">
                             <img src="__WEBPUBLIC__/Admin/images/icons/point.png" class='point'/>
-                            <img src="__WEBROOT__/Uploads/{$member_list['id_card_p']}" class="ad-fixed">
+                            <img src="__WEBROOT__/Uploads/{$da['user_identity_a']}" class="ad-fixed">
                         </div>
                     </td>
                     <td>
-                        <a class="underline pop">{:basename($member_list['id_card_o'])}</a>
+                        <a class="underline pop">{:basename($da['user_identity_b'])}</a>
                         <div class='img-position' style="display:none;">
                             <img src="__WEBPUBLIC__/Admin/images/icons/point.png" class='point'/>
-                            <img src="__WEBROOT__/Uploads/{$member_list['id_card_o']}" class="ad-fixed">
+                            <img src="__WEBROOT__/Uploads/{$member_list['user_identity_b']}" class="ad-fixed">
                         </div>
                     </td>
                     <td>
-                        <a class="underline pop">{:basename($member_list['id_card_a'])}</a>
+                        <a class="underline pop">{:basename($da['user_identity_c'])}</a>
                         <div class='img-position' style="display:none;">
                             <img src="__WEBPUBLIC__/Admin/images/icons/point.png" class='point'/>
-                            <img src="__WEBROOT__/Uploads/{$member_list['id_card_a']}" class="ad-fixed">
+                            <img src="__WEBROOT__/Uploads/{$member_list['user_identity_b']}" class="ad-fixed">
                         </div>
                     </td>
-                    <td>{$member_list['card_num']}</td>
-                    <td>{$member_list['region']}</td>
+                    <td>{$da['identity']}</td>
                     <td>
-                        <a href="{:U('Member/checkMemAction',array('m_id'=>$member_list['m_id'],'flag'=>1))}">通过</a>&nbsp;&nbsp;&nbsp;
-                        <a href="{:U('Member/checkMemAction',array('m_id'=>$member_list['m_id'],'flag'=>0))}">不通过</a>
+                        <a href="{:U('Member/checkMemAction',array('user_id'=>$da['user_id'],'flag'=>1))}">通过</a>&nbsp;&nbsp;&nbsp;
+                        <a href="{:U('Member/checkMemAction',array('user_id'=>$da['user_id'],'flag'=>0))}">不通过</a>
                     </td>
                 </tr>
             </volist>
