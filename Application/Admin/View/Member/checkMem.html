@@ -36,17 +36,17 @@
             </div>
             <button type="submit" class="btn derive">查询</button>
         </form>-->
-        <form action="{:U('Member/checkMem')}" method="post" class="search-form form-inline" role="form">
+        <form action="{:U('Member/users')}" method="post" class="search-form form-inline" role="form">
             <div class="form-group">
                 <label class="sr-only" for="con_maccount">请输入用户名</label>
-                <input class="earch-input form-control" id="con_maccount" type="text" name="con_maccount" placeholder="请输入用户名"/>　
+                <input class="earch-input form-control" id="user_account" type="text" name="user_account" placeholder="请输入用户名"/>　
             </div>
             <button type="submit" class="btn derive">查询</button>
         </form>
-        <form action="{:U('Member/checkMem')}" method="post" class="search-form form-inline" role="form">
+        <form action="{:U('Member/users')}" method="post" class="search-form form-inline" role="form">
             <div class="form-group">
                 <label class="sr-only" for="con_maccount">请输入真实姓名</label>
-                <input class="earch-input form-control" id="con_mrealname" type="text" name="con_mrealname" placeholder="请输入真实姓名"/>　
+                <input class="earch-input form-control" id="user_name" type="text" name="user_name" placeholder="请输入真实姓名"/>　
             </div>
             <button type="submit" class="btn derive">查询</button>
         </form>
@@ -81,21 +81,21 @@
                         <a class="underline pop">{:basename($da['user_identity_a'])}</a>
                         <div class='img-position' style="display:none;">
                             <img src="__WEBPUBLIC__/Admin/images/icons/point.png" class='point'/>
-                            <img src="__WEBROOT__/Uploads/{$da['user_identity_a']}" class="ad-fixed">
+                            <img src="__WEBROOT__/Uploads/Document/{$da['user_identity_a']}" class="ad-fixed">
                         </div>
                     </td>
                     <td>
                         <a class="underline pop">{:basename($da['user_identity_b'])}</a>
                         <div class='img-position' style="display:none;">
                             <img src="__WEBPUBLIC__/Admin/images/icons/point.png" class='point'/>
-                            <img src="__WEBROOT__/Uploads/{$member_list['user_identity_b']}" class="ad-fixed">
+                            <img src="__WEBROOT__/Uploads/Document/{$da['user_identity_b']}" class="ad-fixed">
                         </div>
                     </td>
                     <td>
                         <a class="underline pop">{:basename($da['user_identity_c'])}</a>
                         <div class='img-position' style="display:none;">
                             <img src="__WEBPUBLIC__/Admin/images/icons/point.png" class='point'/>
-                            <img src="__WEBROOT__/Uploads/{$member_list['user_identity_b']}" class="ad-fixed">
+                            <img src="__WEBROOT__/Uploads/Document/{$da['user_identity_c']}" class="ad-fixed">
                         </div>
                     </td>
                     <td>{$da['identity']}</td>

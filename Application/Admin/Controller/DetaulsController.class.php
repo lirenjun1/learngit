@@ -1,5 +1,6 @@
 <?php
 /**
+ * 订单管理操作
  * Date: 16-8-15
  * Time: 上午10:18
  */
@@ -39,8 +40,8 @@ class DetaulsController extends AdminBasicController{
         }
         // 已下单待处理    状态为0表示已经下单  但是没有付款
         // $where['order_status'] = array(0);
-        
-        $orde = $this->order->addata($where);   // addata  是查询操作
+        $desc = "order_time";                  // 已什么字段排序
+        $orde = $this->order->addata($where,$desc);   // addata  是查询操作
     
         $this->assign('page',$orde['page']);    // 赋值分页输出
         $this->assign('data',$orde['data']);    // 赋值输出
@@ -57,7 +58,8 @@ class DetaulsController extends AdminBasicController{
 
         $where['order_status'] = array(1);       // 订单状态   1表示待发货状态
 
-        $orde = $this->order->addata($where);       // addata  是查询操作
+        $desc = "order_ptime";                     // 已什么字段排序
+        $orde = $this->order->addata($where,$desc);   // addata  是查询操作
     
         $this->assign('page',$orde['page']);    // 赋值分页输出
         $this->assign('data',$orde['data']);    // 赋值输出
@@ -74,7 +76,8 @@ class DetaulsController extends AdminBasicController{
 
         $where['order_status'] = array(2);       // 订单状态   2表示已发货状态
 
-        $orde = $this->order->addata($where);       // addata  是查询操作
+        $desc = "order_ptime";                     // 已什么字段排序
+        $orde = $this->order->addata($where,$desc);       // addata  是查询操作
     
         $this->assign('page',$orde['page']);    // 赋值分页输出
         $this->assign('data',$orde['data']);    // 赋值输出
@@ -84,14 +87,14 @@ class DetaulsController extends AdminBasicController{
         $this->display('already');
     }
 
-    // 已发货
+    // 交易完成
     public function dealgoes(){
         $management = "交易完成";
         $this->assign('order',$management);    // 标题输出
 
         $where['order_status'] = array(3);       // 订单状态   3表示已发货状态
-
-        $orde = $this->order->addata($where);       // addata  是查询操作
+        $desc = "order_stime";
+        $orde = $this->order->addata($where,$desc);       // addata  是查询操作
     
         $this->assign('page',$orde['page']);    // 赋值分页输出
         $this->assign('data',$orde['data']);    // 赋值输出
@@ -101,5 +104,37 @@ class DetaulsController extends AdminBasicController{
         $this->display('already');
     }
     
-   
+
+    // 取消为付款的订单
+    public function cancel()
+    {
+        $where['order_id'] = $_POST['order_id'];
+    
+        $data['order_status'] = 9;
+        $order = M('order');
+        $dele = $order->where($where)->save($data);
+        
+        if($dele){
+            $result['success'] = "订单取消成功！";
+        }else{
+            $result['error'] = "订单取消失败!请稍后重试";
+        }
+        echo json_encode($result); 
+    }
+
+
+
+    // 订单详情页
+    public function orderdetails()
+    {
+        // 获取条件
+        $where['order_id'] = (int)$_GET['order_id'];
+
+        $order = $this->order->query($where);
+
+        $this->assign('da',$order[0]);
+        var_dump($order);
+        // 渲染模版
+        $this->display('orderdetails');
+    }
 }

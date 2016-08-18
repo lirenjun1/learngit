@@ -68,12 +68,10 @@
                         <td>
                             <if condition="$da['order_ptime'] neq 0">
                                 <i>{$da['order_ptime']|date='Y-m-d H:i:s',###}</i>
-                            <elseif condition="$da['order_ptime'] eq 0"/>
-                                <i style="color: green">未付款</i>
                             </if>
                         <td>
                             <if condition="$da['order_pmethod'] eq 0">
-                                <i>未付款</i>
+                                <!--<i style="color: red">未付款</i>-->
                                 <elseif condition="$da['order_pmethod'] eq 1"/>
                                 <i>支付宝</i>
                                 <elseif condition="$da['order_pmethod'] eq 2"/>
@@ -82,7 +80,7 @@
                         </td>
                         <td>
                             <if condition="$da['order_status'] eq 0">
-                                <i>未付款</i>
+                                <i style="color:red">未付款</i>
                                 <elseif condition="$da['order_status'] eq 1"/>
                                 <i>待发货</i>
                                 <elseif condition="$da['order_status'] eq 2"/>
@@ -90,15 +88,15 @@
                                 <elseif condition="$da['order_status'] eq 3"/>
                                 <i>交易完成</i>
                                 <elseif condition="$da['order_status'] eq 9"/>
-                                <i>订单取消</i>
+                                <i style="color: red">订单已取消</i>
                             </if>
                        </td>
                         
                         <td>
-                            <a href="{:U('Detauls/editmem',array('order_id'=>$da['order_id']))}">查看详情</a>
+                            <a href="{:U('Detauls/orderdetails',array('order_id'=>$da['order_id']))}">查看详情</a>
                             &nbsp;&nbsp;
                             <if condition="$da['order_status'] eq 0">
-                                <a href="" name="{$da['order_id']}" class="shanchu">取消订单</a>
+                                <a href="" name="{$da['order_id']}" class="quxiao">取消订单</a>
                             </if>
                         </td>
                     </tr>
@@ -108,7 +106,7 @@
                 <tr>
                     <td colspan="20">
                         <div class="bulk-actions fl">
-                            <input type="button" class="btn delete-batch" value="批量取消订单">　
+                            <!--<input type="button" class="btn delete-batch" value="批量取消订单">-->　
                         </div>
                         <div class="fr">
                             {$page}
@@ -123,43 +121,15 @@
 
 <script type="text/javascript">
     $(document).ready(function(){
-        $('.shanchu').click(function(){
-              if(confirm('确定要删除吗？')){
+        $('.quxiao').click(function(){
+              if(confirm('确定要取消此订单吗？')){
                 
-                var login_id = $(this).attr("name");
+                var order_id = $(this).attr("name");
                 $.ajax({
-                    'url':'{:U("Member/deleteMem")}',
+                    'url':'{:U("Detauls/cancel")}',
                     'type':'post',
                     'data':{
-                        login_id:login_id,
-                    },
-                    success: function(data){
-                        data = JSON.parse(data);
-                        if(data.success){
-                            alert(data.success);
-                            $(".delCheck").each(function(){
-                                $(this).attr("checked",false);
-                            })
-                            location.reload();
-                        }else{
-                            alert(data.error);
-                        }
-                    }
-                })
-                
-              }  
-        });
-
-        // 恢复
-        $('.huifu').click(function(){
-              if(confirm('确定要恢复吗？')){
-                
-                var login_id = $(this).attr("name");
-                $.ajax({
-                    'url':'{:U("Member/recovery")}',
-                    'type':'post',
-                    'data':{
-                        login_id:login_id,
+                        order_id:order_id,
                     },
                     success: function(data){
                         data = JSON.parse(data);
