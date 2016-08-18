@@ -33,7 +33,7 @@ class OrderModel extends Model {
         // 分页
         import("ORG.Util.Page"); // 导入分页类
         
-        $count = M('order')->join('lhl_user ON lhl_order.order_id = lhl_user.user_id')
+        $count = $this->join('lhl_user ON lhl_order.order_id = lhl_user.user_id')
             ->where($where)
             ->limit($page->firstRow.','.$page->listRows)
             ->count();                  // 获取数量

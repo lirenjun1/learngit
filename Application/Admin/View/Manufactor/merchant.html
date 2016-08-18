@@ -1,0 +1,204 @@
+<include file="Public:header"/>
+<script type="text/javascript" src="__WEBPUBLIC__/Admin/js/ajax-operate.js"></script>
+<style>
+    .form-inline{
+        display: inline-block;
+        width: 300px;
+    }
+</style>
+<!--主页面-->
+<div id="main-content" class="content">
+    <ul class="breadcrumb">
+        <li><a href="#">首页</a></li>
+        <li class="active"><a href="">{$order}</a></li>
+    </ul>
+
+    <include file="Public:notification"/>
+    <div class="search-content">
+        <form action="{:U('Manufactor/merchant')}" method="post" class="search-form form-inline" role="form">
+            <div class="form-group">
+                <label class="sr-only" for="con_mid">请输入厂家名称</label>
+                <input class="earch-input form-control" id="manufactor_name" type="text" name="manufactor_name" placeholder="请输入厂家名称"/>　
+            </div>
+            <button type="submit" class="btn derive">查询</button>
+        </form>
+        
+        <form action="{:U('Manufactor/merchant')}" method="post" class="search-form form-inline" role="form">
+            <div class="form-group">
+                <label class="sr-only" for="con_maccount">请输入厂家ID号</label>
+                <input class="earch-input form-control" id="manufactor_id" type="text" name="manufactor_id" placeholder="请输入厂家ID号"/>　
+            </div>
+            <button type="submit" class="btn derive">查询</button>
+        </form>
+         <form action="{:U('Manufactor/merchant')}" method="post" class="search-form form-inline" role="form">
+            <div class="form-group">
+                <label class="sr-only" for="con_maccount">请输入厂家账号</label>
+                <input class="earch-input form-control" id="manufactor_account" type="text" name="manufactor_account" placeholder="请输入厂家账号"/>　
+            </div>
+            <button type="submit" class="btn derive">查询</button>
+        </form>
+    </div>
+    <div class="content-box-table content-box-content">
+        <form action="{:U('Manufactor/merchant')}" method="post" class="batch-form">
+            <table class="table table-striped table-framed table-hover">
+                <thead>
+                <tr>
+                    <th width="3%">厂家ID</th>
+                    <th width="5%">厂家名称</th>
+                    <th width="5%">厂家账号</th>
+                    <th width="5%">厂家地址</th>
+                    <th width="5%">厂家联系电话</th>
+                    <th width="5%">厂家最后一次登录时间</th>
+                    <th width="5%">厂家状态</th>
+                    <th width="10%">操作</th>
+                </tr>
+                </thead>
+                <tbody class="tbody">
+                <if condition="empty($data)">
+                    <tr>
+                        <td colspan="20"><span style="font-size:14px;">暂无数据</span></td>
+                    </tr>
+                </if>
+                <volist name="data" id="da">
+                    <tr>
+                        <td><input type="checkbox" class="delCheck" value="{$da['login_id']}"/>&nbsp;&nbsp;{$da['manufactor_id']}</td>
+                        <td>{$da['manufactor_name']}</td>
+                        <td>{$da['manufactor_account']}</td>
+                        <td>{$da['manufactor_address']}</td>
+                        <td>{$da['manufactor_contact']}</td>
+                        <td>{$da['manufactor_ztime']|date='Y-m-d H:i:s',###}</td>
+                        <td>
+                            <if condition="$da['manufactor_status'] eq 0">
+                                <span style="color:green;">正常使用</span>
+                            <elseif condition="$da['manufactor_status'] neq 0"/>
+                                <span style="color:red;">账户禁止使用</span>
+                            </if>
+                        </td>   
+                        <td>
+                            <if condition="$da['manufactor_status'] eq 0">
+                                <a href="" name="{$da['manufactor_id']}" class="jinzhi">禁止使用</a>
+                            <elseif condition="$da['manufactor_status'] neq 0"/>
+                                <a href="" name="{$da['manufactor_id']}" class="huifu">恢复正常</a>
+                            </if>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <a href="{:U('Manufactor/edit',array('manufactor_id'=>$da['manufactor_id']))}">修改</a>
+                        </td>
+                    </tr>
+                </volist>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td colspan="20">
+                        <div class="bulk-actions fl">
+                            <!--<input type="button" class="btn delete-batch" value="批量取消订单">-->　
+                        </div>
+                        <div class="fr">
+                            {$page}
+                        </div>
+                    </td>
+                </tr>
+                </tfoot>
+            </table>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('.jinzhi').click(function(){
+              if(confirm('确定要禁止此商家吗？')){
+                
+                var manufactor_id = $(this).attr("name");
+                $.ajax({
+                    'url':'{:U("Manufactor/prohibit")}',
+                    'type':'post',
+                    'data':{
+                        manufactor_id:manufactor_id,
+                    },
+                    success: function(data){
+                        data = JSON.parse(data);
+                        if(data.success){
+                            alert(data.success);
+                            $(".delCheck").each(function(){
+                                $(this).attr("checked",false);
+                            })
+                            location.reload();
+                        }else{
+                            alert(data.error);
+                        }
+                    }
+                })
+                
+              }  
+        });
+
+
+
+        $('.huifu').click(function(){
+              if(confirm('确定要恢复此商家吗？')){
+                
+                var manufactor_id = $(this).attr("name");
+                $.ajax({
+                    'url':'{:U("Manufactor/recovery")}',
+                    'type':'post',
+                    'data':{
+                        manufactor_id:manufactor_id,
+                    },
+                    success: function(data){
+                        data = JSON.parse(data);
+                        if(data.success){
+                            alert(data.success);
+                            $(".delCheck").each(function(){
+                                $(this).attr("checked",false);
+                            })
+                            location.reload();
+                        }else{
+                            alert(data.error);
+                        }
+                    }
+                })
+                
+              }  
+        });
+
+    });
+
+    $(document).ready(function(){
+        //批量删除
+        $('.delete-batch').click(function(){
+            if(confirm('确定要执行批量删除操作吗？')){
+                var ids = [];
+                //获取选中的信息
+                $(".delCheck").each(function(){
+                    if($(this).is(":checked")){
+                        ids.push($(this).val());
+                    }
+                })
+                id = ids.join(',');
+                if(id != ''){
+                    $.ajax(
+                            {
+                                'url':'{:U("Member/deleteMemberAll")}',
+                                'type':'post',
+                                'data':{
+                                    id:id,
+                                },
+                                success: function(data){
+                                    data = JSON.parse(data);
+                                    if(data.success){
+                                        alert(data.success);
+                                        $(".delCheck").each(function(){
+                                            $(this).attr("checked",false);
+                                        })
+                                        location.reload();
+                                    }else{
+                                        alert(data.error);
+                                    }
+                                }
+                            }
+                    )
+                }
+            }
+        });
+    });
+</script>
+<include file="Public:footer"/>
