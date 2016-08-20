@@ -1,0 +1,80 @@
+<include file="Public:header"/>
+<script type="text/javascript" src="__WEBPUBLIC__/Admin/js/ajax-operate.js"></script>
+<style>
+    .form-inline{
+        display: inline-block;
+        width: 300px;
+    }
+</style>
+<!--主页面-->
+<div id="main-content" class="content">
+    <ul class="breadcrumb">
+        <li><a href="#" onClick="javascript :history.go(-1);">返回上一页</a></li>
+    </ul>
+
+    <include file="Public:notification"/>
+    <div class="search-content">
+        <notempty name="no">
+            属性列表
+        </notempty>
+        <a href="{:U('Product/proattr',array('no'=>$no,'r'=>'add'))}" class="btn btn-default btn-lg " role="button" style="float: right; color: #000000">添加产品属性</a>
+
+    </div>
+    <div class="content-box-table content-box-content">
+        <form action="{:U('Member/deleteMem')}" method="post" class="batch-form">
+            <table class="table table-striped table-framed table-hover">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th >属性编号</th>
+                    <th>上级属性名称</th>
+                    <th >属性名称</th>
+                    <th >属性价格</th>
+                    <th>库存</th>
+                    <th >操作</th>
+                </tr>
+                </thead>
+                <tbody class="tbody">
+                <if condition="empty($att)">
+                    <tr>
+                        <td colspan="20"><span style="font-size:14px;">暂无数据</span></td>
+                    </tr>
+                </if>
+                <foreach name="att" item="att1">
+
+                <tr>
+                    <td>
+                        <input type="checkbox"  value="option1">
+                    </td>
+
+                    <td >{$att1['id']}</td>
+                    <td >{$att1['aname']}</td>
+                    <td>{$att1['attr_name']}</td>
+                    <td >{$att1['attr_price']}</td>
+                    <td >{$att1['attr_kucun']}</td>
+                    <td >
+                        <a href="{:U('Product/proattr',array('no'=>$att1['productno'],'id'=>$att1['id'],'r'=>'delet'))}" onclick=" return shanchu()">删除</a>
+                        &nbsp;&nbsp;
+                        <a href="{:U('Product/proattr',array('no'=>$att1['productno'],'id'=>$att1['id'],'r'=>'update'))}" >修改</a>
+
+
+                    </td>
+                </tr>
+                </foreach>
+                </tbody>
+            </table>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+    function shanchu() {
+        if(confirm('确定删除这条属性吗？')){
+            return true
+        }else {
+
+            return false
+        }
+    }
+</script>
+
+<include file="Public:footer"/>

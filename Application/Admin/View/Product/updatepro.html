@@ -1,0 +1,162 @@
+<include file="Public:header"/>
+<script type="text/javascript" src="__WEBPUBLIC__/Admin/js/ajax-operate.js"></script>
+<script type="text/javascript" charset="utf-8" src="__WEBPUBLIC__/Admin/bianyi/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="__WEBPUBLIC__/Admin/bianyi/ueditor.all.min.js"> </script>
+<script type="text/javascript" charset="utf-8" src="__WEBPUBLIC__/Admin/bianyi/lang/zh-cn/zh-cn.js"></script>
+<script type="text/javascript">
+    var ue = UE.getEditor('container');
+</script>
+
+<div id="main-content" class="content">
+    <ul class="breadcrumb">
+        <li><a href="#" onClick="javascript :history.go(-1);">返回上一页</a></li>
+    </ul>
+    <h3>修改产品</h3>
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">通用信息</a></li>
+        <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">详细描述</a></li>
+
+
+        <li role="presentation"><a href="#jieshao" aria-controls="jieshao" role="tab" data-toggle="tab">产品介绍</a></li>
+    </ul>
+    <form action="{:U('Admin/Product/updatepro',array('r'=>'add'))}" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="no" value="{$list[0]['cmdinfo_no']}"/>
+        <div class="form-horizontal">
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane fade in active" id="home">
+
+                    <div class="form-group">
+                        <label for="inputText3" class="col-sm-2 control-label">产品名称</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="cmdinfo_name" value="{$list[0]['cmdinfo_name']}" id="inputText3" placeholder="产品名称">
+                            <p class="help-block" style="color: red">必填产品名称</p>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label  class="col-sm-2 control-label">产品类型</label>
+                        <div class="col-sm-10">
+                            <select class="form-control" name="cmd_id" id="type">
+                                <option value="{$list[0]['cmd_id']}">{$list[0]['cmd_name']}</option>
+
+                                <foreach name="prt" item="pr">
+                                    <eq name="pr['cmd_fid']" value="0">
+                                        <option value="{$pr['cmd_id']}">{$pr['cmd_name']}</option>
+                                        <foreach name="prt" item="pr1">
+                                            <eq name="pr1['cmd_fid']" value="$pr['cmd_id']">
+
+                                                <option value="{$pr1['cmd_id']}"> &nbsp;&nbsp;&nbsp;&nbsp;{$pr1['cmd_name']}</option>
+                                            </eq>
+                                        </foreach>
+                                    </eq>
+                                </foreach>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="select1" name="cmdinfo_sjno" class="col-sm-2 control-label">所属商家</label>
+                        <div class="col-sm-10">
+                            <select class="form-control" name="cmdinfo_sjno" id="select1">
+                                <option value="{$list[0]['id']}">{$list[0]['name']}</option>
+                                <foreach name="shj" item="shj1">
+
+                                    <option value="{$shj1['id']}">{$shj1['name']}</option>
+                                </foreach>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputText5" class="col-sm-2 control-label">产品价格</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="cmdinfo_price" value="{$list[0]['cmdinfo_price']}" class="form-control" id="inputText5" placeholder="保留两位小数">
+                            <p class="help-block" style="color: red">保留两位小数</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div role="tabpanel" class="tab-pane fade" id="profile">
+                    <textarea class="form-control" name="cmdinfo_br" rows="5">{$list[0]['cmdinfo_br']}</textarea>
+                </div>
+
+
+
+
+
+
+
+
+                <div role="tabpanel" class="tab-pane fade" id="jieshao">
+                    <div class="form-group">
+                        <label for="container" class="col-sm-2 control-label">商品介绍:</label> <br>
+                        <script id="container"style="width: 95%;height: 400px;margin: 20px auto;" name="introduce" type="text/plain">
+
+                              <?php echo html_entity_decode($list[0]['introduce']); ?>
+                        </script>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-primary">保存</button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+</div>
+
+<script type="text/javascript">
+    function  jia1(t) {
+        //alert('dddddddd');
+        var top3= $(t).parent();
+        var htm=top3.html();
+        top3.after('<div>'+htm+'</div>');
+
+    }
+    function jia2(t) {
+        var top1=$(t).parent();
+        var htm1=top1.html();
+        top1.after('<div>'+htm1+'</div>');
+    }
+    function jian(t) {
+        var j2=$(t).parent();
+        var n=j2.index();
+        if(n==0){
+
+        }else {
+            j2.remove();
+        }
+    }
+</script>
+<!--根据所选类型查出属性-->
+<script type="text/javascript">
+    $("#type").change(function(){
+        var typeid = $(this).val(); //获取切换的类别的id
+        $.ajax({
+            cache:false,
+            type:"post",
+            url:'{:U("Product/ajax")}',
+            dataType:"JSON",
+            data:{id:typeid},
+            timeout:30000,
+            error:function(){
+//                alert('ddd');
+            },
+            success:function(data) {
+                var data1= JSON.parse(data);
+//                alert(data1[1]['id']);
+                var trs = "";
+//                alert(data1.length);
+                $('#attr option[value!=""]').remove(); //清空option 每次改变option的时候载入新的数据
+                $.each(data1,function (index,value) {
+//                    alert(index);
+                    trs = "<option value="+value.id+">"+value.name+"</option>";
+                    $(trs).appendTo("#attr");
+                });
+
+
+            }
+        });
+
+    });
+</script>

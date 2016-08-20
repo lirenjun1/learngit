@@ -1,0 +1,105 @@
+<include file="Public:header"/>
+<script type="text/javascript" src="__WEBPUBLIC__/Admin/js/ajax-operate.js"></script>
+<style>
+    .form-inline{
+        display: inline-block;
+        width: 300px;
+    }
+</style>
+<!--主页面-->
+<div id="main-content" class="content">
+    <ul class="breadcrumb">
+        <li><a href="#">首页</a></li>
+    </ul>
+
+    <include file="Public:notification"/>
+    <div class="search-content">
+        <form action="{:U('Product/producttype',array('r'=>'sousuo'))}" method="post" class="search-form form-inline" role="form">
+            <div class="form-group">
+                <label class="sr-only" for="con_maccount">产品类型名</label>
+                <input class="earch-input form-control" id="con_maccount" type="text" name="name" placeholder="请输入产品类型名称"/>　
+            </div>
+            <button type="submit" class="btn derive">查询</button>
+        </form>
+
+        <a href="{:U('Admin/Product/typeadd')}" class="btn btn-default btn-lg " role="button" style="float: right; color: #000000">添加产品类型</a>
+    </div>
+    <div class="content-box-table content-box-content">
+
+        <table class="table table-striped table-framed table-hover">
+            <thead>
+            <tr>
+                <th></th>
+                <th >产品类型编号</th>
+                <th>产品类型名称</th>
+                <th >类型logo</th>
+                <th >上级类型</th>
+                <th >操作</th>
+            </tr>
+            </thead>
+
+            <tbody class="tbody">
+            <foreach name="prt" item="pt">
+
+
+                    <tr>
+                        <td>
+                            <input type="checkbox" name="type1"  value="{$pt['cmd_id']}">
+                        </td>
+
+                        <td >{$pt['cmd_id']}</td>
+                        <td>{$pt['cmd_name']}</td>
+                        <td ><img src="__WEBUPL__/{$pt['cmd_logo']}" alt="" style="height: 50px;width: 50px;"></td>
+                        <td >{$pt['cmd_fid']}</td>
+                        <td >
+                            <a href="{:U('Product/deletetype',array('id'=>$pt['cmd_id']))}" class="delete" onclick="return delet(this) ">删除</a>
+                        </td>
+                    </tr>
+                    <foreach name="prt" item="pt1">
+                        <eq name="pt1['cmd_fid']" value="$pt['cmd_id']">
+                            <tr>
+                                <td>
+                                    <input type="checkbox" name="type1"  value="{$pt1['cmd_id']}">
+                                </td>
+
+                                <td >{$pt1['cmd_id']}</td>
+                                <td>{$pt1['cmd_name']}</td>
+                                <td ><img src="__WEBUPL__/{$pt1['cmd_logo']}" alt="" style="height: 50px;width: 50px;"></td>
+                                <td >{$pt1['cmd_fid']}</td>
+                                <td >
+
+                                    <a href="{:U('Product/deletetype',array('id'=>$pt1['cmd_id']))}" class="delete" onclick="return delet(this) ">删除</a>
+                                </td>
+                            </tr>
+                        </eq>
+                    </foreach>
+
+            </foreach>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td colspan="20">
+                    <div class="green-black">
+                        {$page}
+                    </div>
+
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    function delet() {
+        if(confirm('确定上架操作吗？')){
+            return true
+        }else {
+
+            return false
+        }
+    }
+</script>
+<include file="Public:footer"/>
