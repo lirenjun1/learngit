@@ -16,22 +16,24 @@ class OrderModel extends Model {
         array('ctime','time',self::MODEL_INSERT,'function'), // 对ctime字段在插入的时候写入当前时间戳
         array('utime','time',self::MODEL_BOTH,'function'), // 对utime字段在修改的时候写入当前时间戳
     );
-   
-    public function addata($where)
+    /**
+     * @var addata
+     * 订单查询 更具条件
+     */
+    public function addata($where,$desc)
     {
         // 查询状态为0的订单  
         // $where['order_status'] = array('eq',$where['order_status']['0']);
-        
+
         $data = $this->join('lhl_user ON lhl_order.order_id = lhl_user.user_id')
             ->where($where)
             ->limit($page->firstRow.','.$page->listRows)
-            ->order('order_id desc')->select();                    // 查询内容
-        
+            ->order($desc.' desc')->select();                    // 查询内容
 
         // 分页
         import("ORG.Util.Page"); // 导入分页类
         
-        $count = M('order')->join('lhl_user ON lhl_order.order_id = lhl_user.user_id')
+        $count = $this->join('lhl_user ON lhl_order.order_id = lhl_user.user_id')
             ->where($where)
             ->limit($page->firstRow.','.$page->listRows)
             ->count();                  // 获取数量
@@ -45,6 +47,20 @@ class OrderModel extends Model {
         return $result;    
         
     }
+
+    /**
+     * @var query
+     * 查询订单基本信息
+     */
+    public function query($where)
+    {
+        // 更具条件查询数据
+        $result = $this->join('lhl_details ON lhl_order.order_id = lhl_details.details_id')->where($where)->select();
+        
+        return $result; 
+    }
+
+
 
     /**
      * 分页

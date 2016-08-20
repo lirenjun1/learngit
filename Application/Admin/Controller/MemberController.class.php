@@ -78,8 +78,7 @@ class MemberController extends AdminBasicController{
         $data['status'] = 9;
         $user = M('user');
         $dele = $user->where($where)->save($data);
-        echo $user->getLastSql();
-        exit();
+        
         if($dele){
             $result['success'] = "删除成功！";
         }else{
@@ -95,11 +94,11 @@ class MemberController extends AdminBasicController{
     //实名信息审核列表
     public function users()
     {
-        if(!empty($_POST['con_maccount'])){
-            $where['user_account'] = array('LIKE',"%".$_POST['con_maccount']."%");
+        if(!empty($_POST['user_account'])){
+            $where['user_account'] = array('LIKE',"%".$_POST['user_account']."%");
         }
-        if(!empty($_POST['con_memail'])){
-            $where['login_email'] = array('LIKE',"%".$_POST['con_memail']."%");
+        if(!empty($_POST['user_name'])){
+            $where['user_name'] = array('LIKE',"%".$_POST['user_name']."%");
         }
         // 实例化
         $user = M('user');
