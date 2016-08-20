@@ -14,7 +14,7 @@ class ManufactorController extends AdminBasicController{
     public function _initialize(){
         $this->manufactor = D('Common/manufactor');
         
-        
+        parent::_initialize();
    
     }
 	
@@ -61,14 +61,102 @@ class ManufactorController extends AdminBasicController{
     // 执行修改
     public function addMem()
     {
+        $data['manufactor_name'] = $_POST['manufactor_name'];
+        $data['manufactor_logo'] = $_POST['imgurl'];
+        $data['manufactor_contact'] = $_POST['manufactor_contact'];
+        $data['manufactor_address'] = $_POST['manufactor_address'];
 
-        var_dump($_SERVER);
 
-        
+        $where['manufactor_id'] = $_POST['manufactor_id'];
+        $manufactor = M('manufactor');
+
+        $manu = $manufactor->where($where)->save($data);
+
+        if($manu){
+            //设置成功后跳转页面的地址，默认的返回页面是$_SERVER['HTTP_REFERER']
+            $this->success('操作成功，正在跳转。。。');
+        } else {
+            //错误页面的默认跳转页面是返回前一页，通常不需要设置
+            $this->error('操作失败!请稍后重试');
+        }
+         
+    }
+
+    
+    // 厂家添加视图
+    public function addmerc()
+    {
+
+
+        $this->display('addmerc');
     }
 
 
-    
+    public function addmanufactor()
+    {
+       $data['manufactor_name'] = $_POST['manufactor_name'];
+       $data['manufactor_logo'] = $_POST['imgurl'];
+       $data['manufactor_account'] = $_POST['manufactor_account'];
+       $data['manufactor_contact'] = $_POST['manufactor_contact'];
+       $data['manufactor_address'] = $_POST['manufactor_address'];
+       $data['manufactor_pwd'] = md5($_POST['manufactor_pwd']);
+       $data['manufactor_time'] = time();
+       // 实例化
+       $manufactor = M('manufactor');
+       $da = $manufactor->data($data)->add();
+
+       if($da){
+            //设置成功后跳转页面的地址，默认的返回页面是$_SERVER['HTTP_REFERER']
+            $this->success('操作成功，正在跳转。。。');
+        } else {
+            //错误页面的默认跳转页面是返回前一页，通常不需要设置
+            $this->error('操作失败!请稍后重试');
+        }
+    }
+
+
+    // 查询厂家名是否已经存在
+    public function query()
+    {
+        // 实例化表
+        $manufactor = M('manufactor');
+
+        $where['manufactor_name'] = $_POST['manufactor_name'];
+
+        $manu = $manufactor->field('manufactor_name')->where($where)->select();
+        
+        if(empty($manu)){
+            $result['success'] = "可用";
+        }else{
+            $result['error'] = "已存在,请修改";
+        }
+
+           
+        echo json_encode($result); 
+    }
+
+
+    // 查询厂家登录账户是否存在
+    public function account()
+    {
+        // 实例化表
+        $manufactor = M('manufactor');
+
+        $where['manufactor_account'] = $_POST['manufactor_account'];
+
+        $manu = $manufactor->field('manufactor_account')->where($where)->select();
+        
+        if(empty($manu)){
+            $result['success'] = "可用";
+        }else{
+            $result['error'] = "已存在,请修改";
+        }
+
+           
+        echo json_encode($result); 
+    }
+
+
     // 禁止
     public function prohibit()
     {

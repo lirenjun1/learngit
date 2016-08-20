@@ -6,55 +6,58 @@
         <ul class="breadcrumb">
             <li><a href="#">首页</a></li>
             <li class="active"><a href="{:U('Manufactor/merchant')}">厂家列表</a></li>
-            <li class="active">{$da['manufactor_name']}</li>
+            <li class="active">添加厂家账号</li>
         </ul>
         <!--表格内容-->
         <div class="content-box-content">
             <!--表单 start-->
-            <form action="{:U('Manufactor/addMem')}" method="post" class="form-horizontal" enctype="multipart/form- data">
-                <input type="text" class="form-control" id="manufactor_id" name="manufactor_id" value="{$da['manufactor_id']}" style="display:none;">
+            <form action="{:U('Manufactor/addmanufactor')}" method="post" class="form-horizontal" enctype="multipart/form- data">
                 <div class="form-group ">
                     <label for="m_account" class="col-sm-3 control-label">厂&nbsp;家&nbsp;名&nbsp;称：</label>
                     <div class="col-sm-9">
-                      <input type="text" class="form-control" id="manufactor_name" name="manufactor_name" value="{$da['manufactor_name']}" placeholder="">
+                      <input type="text" class="form-control" id="manufactor_name" name="manufactor_name" value="" placeholder="请设置厂家名称" style="float:left;"><span id="span" style="margin-top:10px; color:red;float:left;"></span>
                     </div>
                 </div>
                 <div class="form-group ">
                     <label for="m_email" class="col-sm-3 control-label">LOGO：</label>
                     <div class="col-sm-9">
-                    <if condition="$da['manufactor_logo'] eq null">
-                        <img id="work-article-head" src="__WEBROOT__/Uploads/head/default/default.jpg" style="width:80px;height:80px;float:left;">
-                    <elseif condition="$da['manufactor_logo'] neq null"/>
-                        <img id="work-article-head" src="__WEBROOT__/Uploads/{$da['manufactor_logo']}" style="width:80px;height:80px;float:left;">
-                    </if>    
+                    
+                        <img id="work-article-head" src="" style="width:80px;height:80px;float:left;">
+                       
                         <!--<input type="file" style="float:left;margin-top:60px;margin-left:20px;">-->
                         <input id="fileToUpload"  type="file" name="Filedata" style="float:left;margin-top:60px;margin-left:20px;" onchange="uploadImg()">
-                        <input type="type" id="imgurl" name="imgurl" value="{$da['manufactor_logo']}" style="display:none;">
+                        <input type="type" id="imgurl" name="imgurl" value="" style="display:none;">
                     </div>
                 </div>
                 <div class="form-group ">
                     <label for="m_email" class="col-sm-3 control-label">厂&nbsp;家&nbsp;账&nbsp;户：</label>
                     <div class="col-sm-9">
-                       <input type="text" class="form-control" id="manufactor_account"  value="{$da['manufactor_account']}" style="float:left" placeholder=""><span style="margin-top:10px; color:red;float:left;">不可修改</span>
+                       <input type="text" class="form-control" id="manufactor_account" name="manufactor_account"  value="" style="float:left" placeholder="请设置厂家登录的账号"><span id="span2" style="margin-top:10px; color:red;float:left;"></span>
+                    </div>
+                </div>
+                <div class="form-group ">
+                    <label for="m_email" class="col-sm-3 control-label">登&nbsp;录&nbsp;密&nbsp;码：</label>
+                    <div class="col-sm-9">
+                       <input type="password" class="form-control" name="manufactor_pwd" id="manufactor_pwd"  value="" style="float:left" placeholder="请设置厂家登录密码"><span id="pwd" style="margin-top:10px; color:red;float:left;"></span>
                     </div>
                 </div>
                 <div class="form-group ">
                     <label for="m_email" class="col-sm-3 control-label">电&nbsp;话&nbsp;号：</label>
                     <div class="col-sm-9">
-                       <input type="text" class="form-control" id="manufactor_contact" name="manufactor_contact" value="{$da['manufactor_contact']}" placeholder="">
+                       <input type="text" class="form-control" id="manufactor_contact" name="manufactor_contact" value="" placeholder="请设置厂家联系方式">
                     </div>
                 </div>
                 <div class="form-group ">
                     <label for="m_email" class="col-sm-3 control-label">地&nbsp;&nbsp;&nbsp;址：</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" id="manufactor_address" name="manufactor_address" value="{$da['manufactor_address']}" placeholder="">
+                        <input type="text" class="form-control" id="manufactor_address" name="manufactor_address" value="" placeholder="请设置厂家地址">
                     </div>
                 </div>
                 
                 
                 <div class="form-group">
                     <div class="col-sm-offset-3 col-sm-9">
-                      <button type="submit" class="btn btn-default btn-primary">确认修改</button>
+                      <button type="submit" class="btn btn-default btn-primary">确认添加</button>
                     </div>
                 </div>
             </form>
@@ -139,8 +142,8 @@
                 $("#work-article-head-url").val(data.imgurl);
                 if(data.success){
                     // 获取图片执行删除
-                    $('#work-article-head').attr("src","__WEBROOT__/Uploads/"+ data.imgurl).css('height','auto');
                     $('#imgurl').attr("value",data.imgurl);
+                    $('#work-article-head').attr("src","__WEBROOT__/Uploads/"+ data.imgurl).css('height','auto');
                 }else{
                     alert(data.error);
                 }
@@ -151,5 +154,94 @@
             }
         });
     }
+</script>、
+<!-- 厂家名称判断 -->
+<script type="text/javascript">
+    $("#manufactor_name").blur(function(){
+        // 获取填写的厂家名检测是否存在
+        var name = $("#manufactor_name").val();
+        $.ajax({
+            url:'{:U("Manufactor/query")}',
+            type:'post',
+            dataType: 'json',//返回数据的类型
+            data:{
+                manufactor_name:name,
+            },
+            success: function(data){
+                
+                if(data.success){
+                     
+                }else{
+                    $("#span").text(data.error);
+                }
+            }
+            
+
+        })
+    })
+
+
+    $("#manufactor_name").focus(function(){
+        $("#span").text(' ');
+    })
+
+</script>
+<!-- 厂家登录账户判断 -->
+<script type="text/javascript">
+    $("#manufactor_account").blur(function(){
+        // 获取填写的厂家名检测是否存在
+        var pwd = $("#manufactor_account").val();
+        $.ajax({
+            url:'{:U("Manufactor/account")}',
+            type:'post',
+            dataType: 'json',//返回数据的类型
+            data:{
+                manufactor_account:pwd,
+            },
+            success: function(data){
+                
+                if(data.success){
+                     
+                }else{
+                    $("#span2").text(data.error);
+                }
+            }
+            
+
+        })
+    })
+
+
+    $("#manufactor_account").focus(function(){
+        $("#span2").text(' ');
+    })
+
+    $("#manufactor_pwd").focus(function(){
+        $("#pwd").text(' ');
+    })
+
+</script>
+<script>
+$(".btn-default").click(function(){
+    // 判断是否满足条件如果满足则提交   如果不满足则终止提交
+    var mc = $("#span").text();
+    var zh = $("#span2").text();
+    var pwd = $("#manufactor_pwd").val().length;
+    
+
+    if(pwd == 0){
+        $("#pwd").text("请输入密码");
+        return false;
+    }
+    if(mc == "已存在,请修改"){
+        return false;
+    }
+    if(zh == "已存在,请修改"){
+        return false;
+    }
+    
+
+    
+ });   
 </script>
 <include file="Public:footer"/>

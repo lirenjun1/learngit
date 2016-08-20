@@ -11,40 +11,11 @@ use Think\Controller;
 
 class MemberCenterController extends AdminBasicController{
 
-    public $work_obj = '';
-    public $deposit_obj = '';
-    public $deposit_history_obj = '';
-    public $skill_type_obj = '';
-    public $idea_obj = '';
-    public $comment_obj = '';
-    public $ideaLike_obj = '';
-    public $taskLike_obj = '';
-    public $task_obj = '';
-    public $email_obj = '';
-    public $sms_obj = '';
-    public $skill_type = '';
-    public $dingdanMsg_obj = '';
-    public $require_obj = '';
-    public $service_obj = '';
-    public $prize_obj = '';
+    
 
     public function _initialize(){
-        $this->work_obj = D('Work');
-        $this->deposit_obj = D('Deposit');
-        $this->deposit_history_obj = D('DepositHistory');
-        $this->skill_type_obj = D('SkillType');
-        $this->idea_obj = D('Idea');
-        $this->comment_obj = D('Comment');
-        $this->ideaLike_obj = D('TaskIdeaLike');
-        $this->taskLike_obj = D('TaskLike');
-        $this->task_obj = D('Task');
-        $this->email_obj = D('Email');
-        $this->sms_obj = D('Sms');
-        $this->skill_type = D('SkillType');
-        $this->require_obj = D('Require');
-        $this->dingdanMsg_obj  = D('DingdanMsg');
-        $this->service_obj = D('Service');
-        $this->prize_obj = D('Prize');
+        
+       
         parent::_initialize();
     }
 
@@ -154,9 +125,9 @@ class MemberCenterController extends AdminBasicController{
         $upload = new \Think\Upload();// 实例化上传类
         $upload->maxSize   =     3145728 ;// 设置附件上传大小
         $upload->exts      =     array('jpg', 'png', 'jpeg');// 设置附件上传类型
-        $upload->rootPath  =     ''; // 设置附件上传根目录
+        $upload->rootPath  =     './Uploads/'; // 设置附件上传根目录
         $upload->subName   =  array('date', 'Ymd'); //子目录创建方式，[0]-函数名，[1]-参数，多个参数使用数组
-        $upload->savePath = '/Work/'; // 设置附件上传（子）目录
+        $upload->savePath = '/info/'; // 设置附件上传（子）目录
         $upload->imgWidth = 500;
         // 上传文件
         $info = $upload->upload();
