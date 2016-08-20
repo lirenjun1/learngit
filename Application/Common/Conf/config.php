@@ -53,5 +53,5 @@ return array(
         '__WEBPUBLIC__'     => __ROOT__.'/Public',
         '__WEBUPL__'     => __ROOT__.'/Application/Public',
     ),
-
+    define('RECOMMEND','./Application/Public/'),
 );

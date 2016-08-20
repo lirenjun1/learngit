@@ -4,7 +4,14 @@
     .form-inline{
         display: inline-block;
         width: 300px;
+
     }
+    li{
+        list-style: none;
+        float: left;
+        margin: 0px 0px;
+    }
+
 </style>
 <!--主页面-->
 <div id="main-content" class="content">
@@ -14,24 +21,24 @@
 
     <include file="Public:notification"/>
     <div class="search-content">
-        <form action="{:U('Member/memList')}" method="post" class="search-form form-inline" role="form">
+        <form action="{:U('Product/prosousuo',array('ss'=>'no'))}" method="post" class="search-form form-inline" role="form">
             <div class="form-group">
                 <label class="sr-only" for="con_mid">请输入产品编号</label>
-                <input class="earch-input form-control" id="con_mid" type="text" name="con_mid" placeholder="请输入产品编号"/>　
+                <input class="earch-input form-control" id="con_mid" type="text" name="cmdinfo_no" placeholder="请输入产品编号"/>　
             </div>
             <button type="submit" class="btn derive">查询</button>
         </form>
-        <form action="{:U('Member/memList')}" method="post" class="search-form form-inline" role="form">
+        <form action="{:U('Product/prosousuo',array('ss'=>'name'))}" method="post" class="search-form form-inline" role="form">
             <div class="form-group">
                 <label class="sr-only" for="con_maccount">请输入产品名</label>
-                <input class="earch-input form-control" id="con_maccount" type="text" name="con_maccount" placeholder="请输入产品名成"/>　
+                <input class="earch-input form-control" id="con_maccount" type="text" name="cmdinfo_name" placeholder="请输入产品名称"/>　
             </div>
             <button type="submit" class="btn derive">查询</button>
         </form>
 
     </div>
     <div class="content-box-table content-box-content">
-        <form action="{:U('Member/deleteMem')}" method="post" class="batch-form">
+        <form action="{:U('Product/shelvespro')}" method="post" class="batch-form" onsubmit="return shangjia()">
             <table class="table table-striped table-framed table-hover">
                 <thead>
                 <tr>
@@ -48,85 +55,38 @@
                 </tr>
                 </thead>
                 <tbody class="tbody">
-
-                <tr>
-                    <td>
-                        <input type="checkbox"  value="option1">
-                    </td>
-                    <th >产品编号</th>
-                    <th >是否上架</th>
-                    <th>产品名称</th>
-                    <th >产品图片</th>
-                    <th >产品介绍</th>
-                    <th >价格</th>
-                    <th >所属分类</th>
-                    <th >所属商家</th>
-                    <th >
-                        <a href="">修改</a>
-                        &nbsp;&nbsp;
-                        <a href="">删除</a>
-                    </th>
-                </tr>
-                <tr>
-                    <td>
-                        <input type="checkbox"  value="option1">
-                    </td>
-                    <th >产品编号</th>
-                    <th >是否上架</th>
-                    <th>产品名称</th>
-                    <th >产品图片</th>
-                    <th >产品介绍</th>
-                    <th >价格</th>
-                    <th >所属分类</th>
-                    <th >所属商家</th>
-                    <th >
-                        <a href="">修改</a>
-                        &nbsp;&nbsp;
-                        <a href="">删除</a>
-                    </th>
-                </tr>
-                <if condition="empty($data)">
+                <if condition="empty($list)">
                     <tr>
                         <td colspan="20"><span style="font-size:14px;">暂无数据</span></td>
                     </tr>
                 </if>
-                <volist name="data" id="da">
+                <volist name="list" id="lis">
                     <tr>
-                        <td><input type="checkbox" class="delCheck" value="{$member['m_id']}"/>&nbsp;&nbsp;{$da['login_id']}</td>
-                        <td>{$da['r_time']|date='Y-m-d H:i:s',###}</td>
-                        <td>{$da['user_account']|default="未填写用户名"}</td>
-                        <td>{$da['login_email ']}</td>
-                        <td>{$da['region']}</td>
-                        <td>{$da['money']}</td>
+                        <td><input type="checkbox" name="checkbox[]" class="delCheck" value="{$lis['cmdinfo_no']}"/>
+                        </td>
+                        <td>{$lis['cmdinfo_no']}</td>
                         <td>
-                            <if condition="$member['is_recommend'] eq 1">
-                                <i style="color: green">是</i>
+                            <eq name="lis['cmdinfo_status']" value="0">
+                            未上架
                                 <else/>
-                                否
-                            </if>
+                                已上架
+                            </eq>
+                        </td>
+                        <td>{$lis['cmdinfo_name']}</td>
+                        <td><img src="__WEBUPL__/{$lis['cmdinfo_img']}" style="width: 50px;height: 50px" alt=""/></td>
+                        <td>{$lis['cmdinfo_br']}</td>
+                        <td>{$lis['cmdinfo_price']}</td>
+                        <td>
+                            {$lis['cmd_name']}
                         </td>
                         <td>
-                            <if condition="$member['status'] eq 0">
-                                <i style="color: grey">未实名</i>
-                                <elseif condition="$member['status'] eq 1"/>
-                                <i style="color: green">待审核</i>
-                                <elseif condition="$member['status'] eq 2"/>
-                                <i style="color: #B06930">已实名</i>
-                                <elseif condition="$member['status'] eq 3"/>
-                                <i style="color: red">审核不通过</i>
-                            </if>
+                            {$lis['name']}
                         </td>
                         <td>
-                            <a href="{:U('Member/editmem',array('m_id'=>$member['m_id']))}">更多</a>
+                            <a href="{:U('Product/updatepro',array('no'=>$lis['cmdinfo_no']))}">修改</a>
                             &nbsp;&nbsp;
-                            <a href="{:U('Member/deleteMem',array('m_id'=>$member['m_id']))}">删除</a>
-                            <if condition="$member['is_recommend'] neq 1">
-                                &nbsp;&nbsp;
-                                <a href="{:U('Member/isRecommend',array('m_id'=>$member['m_id'],'isReco'=>1))}">推荐</a>
-                                <else />
-                                &nbsp;&nbsp;
-                                <a href="{:U('Member/isRecommend',array('m_id'=>$member['m_id'],'isReco'=>0))}">取消推荐</a>
-                            </if>
+                            <a href="{:U('Product/proattr',array('no'=>$lis['cmdinfo_no']))}">属性</a>
+
                         </td>
                     </tr>
                 </volist>
@@ -136,10 +96,10 @@
                     <td colspan="20">
 
                         <div class="bulk-actions fl">
-                            <button type="button" class="btn btn-primary">上架选中的</button>
-                            <input type="button" class="btn delete-batch" value="批量删除">　
+                            <button type="submit" class="btn btn-primary">上架选中的</button>
+                            <input type="button" class="btn delete-batch delete" value="删除选中的">　
                         </div>
-                        <div class="fr">
+                        <div class="green-black">
                             {$page}
                         </div>
                     </td>
@@ -151,34 +111,46 @@
 </div>
 
 <script type="text/javascript">
+    function shangjia() {
+        if(confirm('确定上架操作吗？')){
+            return true
+        }else {
+
+            return false
+        }
+    }
+
     $(document).ready(function(){
         //批量删除
-        $('.delete-batch').click(function(){
+        $('.delete').click(function(){
             if(confirm('确定要执行批量删除操作吗？')){
                 var ids = [];
                 //获取选中的信息
                 $(".delCheck").each(function(){
                     if($(this).is(":checked")){
-                        ids.push($(this).val());
+                        ids.push($(this).val());//在数组后存入值
                     }
                 })
-                id = ids.join(',');
+                id = ids.join(',');//将数组拼接成字符串
                 if(id != ''){
                     $.ajax(
                             {
-                                'url':'{:U("Member/deleteMemberAll")}',
+                                'url':'{:U("Admin/Product/deleteall")}',
                                 'type':'post',
+                                'dataType':"JSON",
                                 'data':{
                                     id:id,
                                 },
                                 success: function(data){
+
                                     data = JSON.parse(data);
+
                                     if(data.success){
                                         alert(data.success);
                                         $(".delCheck").each(function(){
                                             $(this).attr("checked",false);
                                         })
-                                        location.reload();
+                                        location.reload();//重新加载当前文档
                                     }else{
                                         alert(data.error);
                                     }

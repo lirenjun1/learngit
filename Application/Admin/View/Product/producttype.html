@@ -14,10 +14,10 @@
 
     <include file="Public:notification"/>
     <div class="search-content">
-        <form action="{:U('Member/memList')}" method="post" class="search-form form-inline" role="form">
+        <form action="{:U('Product/producttype',array('r'=>'sousuo'))}" method="post" class="search-form form-inline" role="form">
             <div class="form-group">
                 <label class="sr-only" for="con_maccount">产品类型名</label>
-                <input class="earch-input form-control" id="con_maccount" type="text" name="con_maccount" placeholder="请输入产品类型名称"/>　
+                <input class="earch-input form-control" id="con_maccount" type="text" name="name" placeholder="请输入产品类型名称"/>　
             </div>
             <button type="submit" class="btn derive">查询</button>
         </form>
@@ -25,7 +25,7 @@
         <a href="{:U('Admin/Product/typeadd')}" class="btn btn-default btn-lg " role="button" style="float: right; color: #000000">添加产品类型</a>
     </div>
     <div class="content-box-table content-box-content">
-        <form action="{:U('Member/deleteMem')}" method="post" class="batch-form">
+
             <table class="table table-striped table-framed table-hover">
                 <thead>
                 <tr>
@@ -37,8 +37,10 @@
                     <th >操作</th>
                 </tr>
                 </thead>
+
                 <tbody class="tbody">
                 <foreach name="prt" item="pt">
+
                     <eq name="pt['cmd_fid']" value="0">
                 <tr>
                     <td>
@@ -50,9 +52,7 @@
                     <td ><img src="__WEBUPL__/{$pt['cmd_logo']}" alt="" style="height: 50px;width: 50px;"></td>
                     <td >{$pt['cmd_fid']}</td>
                     <td >
-                        <a href="">修改</a>
-                        &nbsp;&nbsp;
-                        <a href="">删除</a>
+                        <a href="{:U('Product/deletetype',array('id'=>$pt['cmd_id']))}" class="delete" onclick="return delet(this) ">删除</a>
                     </td>
                 </tr>
                         <foreach name="prt" item="pt1">
@@ -67,9 +67,8 @@
                                     <td ><img src="__WEBUPL__/{$pt1['cmd_logo']}" alt="" style="height: 50px;width: 50px;"></td>
                                     <td >{$pt1['cmd_fid']}</td>
                                     <td >
-                                        <a href="">修改</a>
-                                        &nbsp;&nbsp;
-                                        <a href="">删除</a>
+
+                                        <a href="{:U('Product/deletetype',array('id'=>$pt1['cmd_id']))}" class="delete" onclick="return delet(this) ">删除</a>
                                     </td>
                                 </tr>
                                 </eq>
@@ -80,60 +79,27 @@
                 <tfoot>
                 <tr>
                     <td colspan="20">
-
-                        <div class="bulk-actions fl">
-
-                            <input type="button" class="btn delete-batch" value="批量删除">　
-                        </div>
-                        <div class="fr">
+                        <div class="green-black">
                             {$page}
                         </div>
+
                     </td>
                 </tr>
                 </tfoot>
             </table>
-        </form>
+
     </div>
 </div>
 
 <script type="text/javascript">
-    $(document).ready(function(){
-        //批量删除
-        $('.delete-batch').click(function(){
-            if(confirm('确定要执行批量删除操作吗？')){
-                var ids = [];
-                //获取选中的信息
-                $(".delCheck").each(function(){
-                    if($(this).is(":checked")){
-                        ids.push($(this).val());
-                    }
-                })
-                id = ids.join(',');
-                if(id != ''){
-                    $.ajax(
-                            {
-                                'url':'{:U("Member/deleteMemberAll")}',
-                                'type':'post',
-                                'data':{
-                                    id:id,
-                                },
-                                success: function(data){
-                                    data = JSON.parse(data);
-                                    if(data.success){
-                                        alert(data.success);
-                                        $(".delCheck").each(function(){
-                                            $(this).attr("checked",false);
-                                        })
-                                        location.reload();
-                                    }else{
-                                        alert(data.error);
-                                    }
-                                }
-                            }
-                    )
+
+            function delet() {
+                if(confirm('确定上架操作吗？')){
+                    return true
+                }else {
+
+                    return false
                 }
             }
-        });
-    });
 </script>
 <include file="Public:footer"/>
