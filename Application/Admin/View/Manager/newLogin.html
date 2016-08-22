@@ -1,4 +1,4 @@
-<!DOCTYPE html">
+<!DOCTYPE html>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -70,7 +70,9 @@
 <script type="text/javascript">
     function change_verify(){
         var str = "{:U('Manager/verify')}";
-        document.getElementById('verify_img').src=str;
+        var str=str;
+        str=str.substring(0,34);
+        document.getElementById('verify_img').src=str+'/'+new Date().getTime();
     }
     $(function(){
         $('#account').focus();
