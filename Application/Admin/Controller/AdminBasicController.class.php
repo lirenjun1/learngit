@@ -22,7 +22,7 @@ class AdminBasicController extends Controller {
     public function checkLogin(){
         session('[regenerate]');   //重新生成sessionID
         $session = session('A_ID');
-        if(!empty($session)){
+        if(empty($session)){
             redirect(U('Manager/newLogin'));exit;
         }
     }
@@ -141,15 +141,5 @@ class AdminBasicController extends Controller {
         }
         return $code;
     }
-
-
-    // 管理员是否登录验证
-    public function verification()
-    {
-
-    }
-
-
-
 
 }
