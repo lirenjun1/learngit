@@ -22,10 +22,14 @@ function ajaxLogin(redirect,chart){
             if(data.error != null){
                 $('.notification').html(data.error);
                 
-                var str=chart;
-                str=str.substring(0,34);
+               var str=chart;
+                // str=str.substring(0,40);
                 
-                document.getElementById('verify_img').src = str + '/' + new Date().getTime();
+
+                
+                str = str.split('.html');
+
+                document.getElementById('verify_img').src = str[0] + '/' + new Date().getTime();
                 $('.submit-btn').val('立刻登录');
                 $('.submit-btn').attr('disabled',false);
             }else{

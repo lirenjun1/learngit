@@ -71,8 +71,10 @@
     function change_verify(){
         var str = "{:U('Manager/verify')}";
         var str=str;
-        str=str.substring(0,34);
-        document.getElementById('verify_img').src=str+'/'+new Date().getTime();
+        str = str.split('.html');
+        // str=str.substring(0,40);
+        // alert(str[0]);
+        document.getElementById('verify_img').src=str[0]+'/'+new Date().getTime();
     }
     $(function(){
         $('#account').focus();
